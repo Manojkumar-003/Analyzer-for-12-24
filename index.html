@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>12×24 Analyzer</title>
+<title>12 × 24 Analyzer</title>
 
 <style>
 *{
@@ -13,142 +12,78 @@
 
 body{
   margin:0;
-  background:#101214;
-  color:#f4f4f4;
   font-family:Arial,sans-serif;
-  padding-bottom:80px;
+  background:#0d1117;
+  color:#fff;
+  padding-bottom:85px;
 }
 
-.container{
-  width:100%;
-  max-width:650px;
-  margin:auto;
-  padding:15px;
-}
-
-header{
+h1{
   text-align:center;
-  padding:10px 0 18px;
+  margin:18px 0 5px;
+  font-size:25px;
 }
 
-header h1{
-  margin:0;
-  font-size:28px;
+.subtitle{
+  text-align:center;
+  color:#8b949e;
+  font-size:13px;
+  margin-bottom:15px;
 }
-
-header p{
-  margin:6px 0 0;
-  color:#888;
-}
-
-
-/* =========================
-   PAGES
-========================= */
 
 .page{
   display:none;
+  padding:12px;
+  max-width:900px;
+  margin:auto;
 }
 
 .page.active{
   display:block;
 }
 
-
-/* =========================
-   CARDS
-========================= */
-
 .card{
-  background:#191c20;
-  border:1px solid #292d32;
-  border-radius:16px;
-  padding:16px;
+  background:#161b22;
+  border:1px solid #30363d;
+  border-radius:14px;
+  padding:15px;
   margin-bottom:14px;
 }
 
-.title{
-  font-size:20px;
-  font-weight:bold;
-  margin-bottom:14px;
+.card h2{
+  margin:0 0 12px;
+  font-size:18px;
 }
 
-.muted{
-  color:#888;
+.card h3{
+  margin:12px 0 8px;
+  font-size:15px;
 }
-
-
-/* =========================
-   BUTTONS
-========================= */
 
 button{
   border:0;
-  border-radius:10px;
-  padding:12px 15px;
-  font-size:15px;
-  font-weight:bold;
-  background:#292e34;
-  color:white;
+  border-radius:9px;
+  padding:10px 13px;
+  font-size:14px;
   cursor:pointer;
 }
 
-button:active{
-  transform:scale(.97);
-}
-
-.green{
-  background:#24c77a;
-  color:#06140d;
-}
-
-.red{
-  background:#d84b4b;
+.primary{
+  background:#238636;
   color:white;
 }
 
-
-/* =========================
-   MESSAGES
-========================= */
-
-.message{
-  display:none;
-  margin-top:10px;
-  padding:10px;
-  border-radius:9px;
+.danger{
+  background:#da3633;
+  color:white;
 }
 
-.message.show{
-  display:block;
+.secondary{
+  background:#30363d;
+  color:white;
 }
 
-.message.success{
-  background:#123c28;
-  color:#5ff09f;
-}
-
-.message.error{
-  background:#421c1c;
-  color:#ff8585;
-}
-
-
-/* =========================
-   KEYPAD
-========================= */
-
-.selected-info{
-  color:#aaa;
-  margin-bottom:7px;
-}
-
-.selected-numbers{
-  color:#5ff09f;
-  font-weight:bold;
-  min-height:22px;
-  margin-bottom:14px;
-}
+/* KEYPAD */
 
 .keypad{
   display:grid;
@@ -157,391 +92,390 @@ button:active{
 }
 
 .key{
-  padding:14px 3px;
-  background:#252a30;
+  background:#21262d;
+  color:white;
+  border:1px solid #30363d;
+  min-height:48px;
+  font-weight:bold;
 }
 
 .key.selected{
-  background:#24c77a;
-  color:#06140d;
+  background:#238636;
+  border-color:#3fb950;
 }
 
-.actions{
-  display:flex;
-  gap:8px;
-  margin-top:12px;
+.selection-info{
+  margin:12px 0;
+  padding:10px;
+  background:#0d1117;
+  border-radius:9px;
+  color:#c9d1d9;
+  font-size:14px;
 }
-
-.actions button{
-  flex:1;
-}
-
-
-/* =========================
-   TEXTAREA
-========================= */
 
 textarea{
   width:100%;
-  min-height:130px;
-  background:#0d0f11;
-  color:white;
-  border:1px solid #343940;
-  border-radius:10px;
-  padding:12px;
-  font-size:15px;
+  min-height:120px;
   resize:vertical;
-  outline:none;
+  background:#0d1117;
+  color:white;
+  border:1px solid #30363d;
+  border-radius:9px;
+  padding:11px;
+  font-size:14px;
 }
 
-textarea:focus{
-  border-color:#24c77a;
+.message{
+  margin-top:9px;
+  font-size:13px;
 }
 
+.success{
+  color:#3fb950;
+}
 
-/* =========================
-   RANGE BUTTONS
-========================= */
+.error{
+  color:#f85149;
+}
+
+/* NAVIGATION */
+
+.bottom-nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  background:#161b22;
+  border-top:1px solid #30363d;
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  z-index:100;
+}
+
+.nav-btn{
+  background:transparent;
+  color:#8b949e;
+  border-radius:0;
+  padding:11px 3px;
+  font-size:11px;
+}
+
+.nav-btn.active{
+  color:#fff;
+  background:#21262d;
+}
+
+/* STREAK BOARD */
+
+.streak-board{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.streak-item{
+  background:#0d1117;
+  border:1px solid #30363d;
+  border-radius:10px;
+  padding:9px 11px;
+  font-weight:bold;
+}
+
+.streak-fire{
+  color:#ffb000;
+}
+
+/* RANGE BUTTONS */
 
 .range-buttons{
   display:flex;
   gap:6px;
-  margin-bottom:15px;
-}
-
-.range-buttons button{
-  flex:1;
-  padding:10px 4px;
+  flex-wrap:wrap;
 }
 
 .range-buttons button.active{
-  background:#24c77a;
-  color:#06140d;
+  background:#238636;
+  color:white;
 }
 
+/* RECENT GRAPH */
 
-/* =========================
-   GRAPH
-========================= */
+.graph-wrap{
+  overflow-x:auto;
+  padding-bottom:5px;
+}
 
-.chart{
-  height:280px;
+.graph{
   display:flex;
   align-items:flex-end;
-  gap:4px;
-  overflow-x:auto;
-  padding:5px 3px 0;
-  border-bottom:1px solid #444;
+  gap:5px;
+  min-width:720px;
+  height:230px;
+  padding:20px 8px 25px;
+  border-bottom:1px solid #30363d;
 }
 
-.bar-wrap{
-  min-width:28px;
+.bar-container{
   height:100%;
+  flex:1;
+  min-width:24px;
   display:flex;
   flex-direction:column;
   justify-content:flex-end;
   align-items:center;
+  position:relative;
 }
 
-.streak{
-  height:25px;
+.streak-label{
+  position:absolute;
+  top:0;
   font-size:10px;
-  color:#ff8235;
+  color:#ffb000;
   font-weight:bold;
   white-space:nowrap;
 }
 
-.bar-count{
-  height:18px;
-  font-size:10px;
-  color:#ddd;
-}
-
 .bar{
-  width:21px;
-  min-height:2px;
-  background:#24c77a;
+  width:75%;
+  min-height:4px;
+  background:#238636;
   border-radius:5px 5px 0 0;
 }
 
 .bar-number{
-  font-size:10px;
-  color:#aaa;
+  position:absolute;
+  bottom:-22px;
+  font-size:11px;
+  color:#c9d1d9;
+}
+
+/* ODD EVEN */
+
+.odd-even{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.stat-box{
+  background:#0d1117;
+  border:1px solid #30363d;
+  border-radius:10px;
+  padding:13px;
+  text-align:center;
+}
+
+.stat-value{
+  font-size:25px;
+  font-weight:bold;
   margin-top:5px;
 }
 
+/* MOST / LEAST */
 
-/* =========================
-   GROUPS
-========================= */
-
-.group{
-  background:#20252a;
-  border-radius:10px;
-  padding:12px;
-  margin-bottom:8px;
+.number-list{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
 }
 
-.group-title{
-  color:#24c77a;
+.number-pill{
+  background:#21262d;
+  border:1px solid #30363d;
+  padding:8px 10px;
+  border-radius:8px;
   font-weight:bold;
-  margin-bottom:5px;
 }
 
-.group-numbers{
-  line-height:1.7;
+/* DRAW GRID */
+
+.grid-scroll{
+  overflow-x:auto;
+  width:100%;
 }
 
-
-/* =========================
-   STATS
-========================= */
-
-.stats-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:8px;
+.draw-grid{
+  border-collapse:collapse;
+  min-width:1050px;
+  width:100%;
 }
 
-.stat{
-  background:#20252a;
-  border-radius:10px;
-  padding:11px;
+.draw-grid th,
+.draw-grid td{
+  border:1px solid #30363d;
+  text-align:center;
+  min-width:38px;
+  height:38px;
+  font-size:11px;
 }
 
-.stat-name{
-  color:#999;
-  font-size:13px;
+.draw-grid th{
+  background:#21262d;
+  position:relative;
 }
 
-.stat-main{
-  font-weight:bold;
-  font-size:17px;
-  margin-top:4px;
+.draw-grid td{
+  background:#0d1117;
 }
 
+.draw-grid td.drawn{
+  background:#238636;
+}
 
-/* =========================
-   HISTORY
-========================= */
+.draw-grid .draw-label{
+  min-width:75px;
+  position:sticky;
+  left:0;
+  z-index:3;
+  background:#161b22;
+}
+
+.grid-streak{
+  display:block;
+  color:#ffb000;
+  font-size:9px;
+  line-height:10px;
+  margin-bottom:2px;
+  white-space:nowrap;
+}
+
+.grid-number{
+  display:block;
+  font-size:11px;
+}
+
+.legend{
+  color:#8b949e;
+  font-size:12px;
+  margin-top:10px;
+}
+
+/* HISTORY */
 
 .history-item{
-  background:#20252a;
+  background:#0d1117;
+  border:1px solid #30363d;
   border-radius:10px;
-  padding:12px;
+  padding:11px;
   margin-bottom:8px;
 }
 
 .history-time{
-  color:#999;
-  font-size:12px;
-  margin-bottom:7px;
+  color:#8b949e;
+  font-size:11px;
+  margin-bottom:6px;
 }
 
 .history-numbers{
-  color:#5ff09f;
   font-weight:bold;
   line-height:1.7;
 }
 
+/* RESPONSIVE */
 
-/* =========================
-   DRAW GRID
-========================= */
-
-.grid-scroll{
-  overflow-x:auto;
-}
-
-.draw-grid{
-  min-width:620px;
-}
-
-.grid-row{
-  display:grid;
-  grid-template-columns:45px repeat(24,1fr);
-  gap:2px;
-  margin-bottom:2px;
-}
-
-.grid-cell{
-  height:25px;
-  background:#252a30;
-  border-radius:3px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:9px;
-}
-
-.grid-cell.drawn{
-  background:#24c77a;
-  color:#06140d;
-  font-weight:bold;
-}
-
-
-/* =========================
-   BOTTOM NAVIGATION
-========================= */
-
-.bottom-nav{
-  position:fixed;
-  left:0;
-  right:0;
-  bottom:0;
-  height:70px;
-  background:#181b1f;
-  border-top:1px solid #30343a;
-  display:flex;
-  z-index:1000;
-}
-
-.nav-btn{
-  flex:1;
-  background:transparent;
-  color:#777;
-  border-radius:0;
-  padding:6px 2px;
-  font-size:11px;
-}
-
-.nav-icon{
-  display:block;
-  font-size:21px;
-  margin-bottom:3px;
-}
-
-.nav-btn.active{
-  color:#24c77a;
-}
-
-
-/* =========================
-   SMALL SCREENS
-========================= */
-
-@media(max-width:380px){
+@media(max-width:500px){
+  h1{
+    font-size:22px;
+  }
 
   .keypad{
     gap:5px;
   }
 
   .key{
-    padding:12px 2px;
+    min-height:44px;
+    padding:5px;
   }
 
-  .stats-grid{
-    grid-template-columns:1fr;
+  .card{
+    padding:12px;
   }
-
 }
 </style>
 </head>
 
-
 <body>
 
-<div class="container">
-
-<header>
-  <h1>12×24 Analyzer</h1>
-  <p>Historical draw statistics</p>
-</header>
+<h1>🔥 12 × 24 Analyzer</h1>
+<div class="subtitle">Historical draw analysis</div>
 
 
-<!-- =====================================================
-     INPUT PAGE
-===================================================== -->
+<!-- ================= INPUT + HISTORY ================= -->
 
 <div id="inputPage" class="page active">
 
-  <!-- KEYPAD -->
-
   <div class="card">
+    <h2>🔢 Select 12 Numbers</h2>
 
-    <div class="title">
-      🔢 Number Input
+    <div id="keypad" class="keypad"></div>
+
+    <div class="selection-info">
+      Selected: <b id="selectedCount">0/12</b>
+      <br>
+      <span id="selectedNumbers">None</span>
     </div>
 
-    <div class="selected-info">
-      Selected <b id="selectedCount">0</b>/12
-    </div>
+    <button class="primary" onclick="saveTapDraw()">
+      💾 Save Draw
+    </button>
 
-    <div
-      id="selectedNumbers"
-      class="selected-numbers">
-      None
-    </div>
+    <button class="secondary" onclick="resetSelection()">
+      Reset
+    </button>
 
-    <div
-      id="keypad"
-      class="keypad">
-    </div>
-
-    <div class="actions">
-
-      <button
-        class="green"
-        onclick="saveTapDraw()">
-        💾 Save Draw
-      </button>
-
-      <button
-        onclick="resetSelection()">
-        Reset
-      </button>
-
-    </div>
-
-    <div
-      id="tapMessage"
-      class="message">
-    </div>
-
+    <div id="tapMessage" class="message"></div>
   </div>
 
 
-  <!-- PASTE -->
+  <div class="card">
+    <h2>📋 Paste Draws</h2>
+
+    <textarea id="pasteInput"
+      placeholder="One draw per line.
+
+Example:
+2,4,5,6,8,10,12,17,18,21,22,23
+3,4,6,12,13,17,18,19,20,21,22,24"></textarea>
+
+    <br><br>
+
+    <button class="primary" onclick="savePastedDraws()">
+      💾 Save Pasted Draws
+    </button>
+
+    <div id="pasteMessage" class="message"></div>
+  </div>
+
+
+  <div class="card">
+    <h2>📋 Saved Draw History</h2>
+
+    <div id="historyPreview"></div>
+
+    <button class="danger" onclick="clearAll()">
+      🧹 Clear All
+    </button>
+  </div>
+
+</div>
+
+
+<!-- ================= DRAW GRID ================= -->
+
+<div id="gridPage" class="page">
 
   <div class="card">
 
-    <div class="title">
-      📋 Paste Draws
-    </div>
+    <h2>🟩 1–24 Draw Grid</h2>
 
-    <div class="muted">
-      One draw per line.
-      Exactly 12 unique numbers from 1–24.
+    <div class="legend">
+      🟩 = drawn &nbsp;&nbsp; Empty = not drawn
     </div>
 
     <br>
 
-    <textarea
-      id="pasteInput"
-      placeholder="Example:
-1,2,3,4,5,6,7,8,9,10,11,12
-2,4,6,8,10,12,14,16,18,20,22,24">
-    </textarea>
-
-    <div class="actions">
-
-      <button
-        class="green"
-        onclick="savePastedDraws()">
-        💾 Save
-      </button>
-
-      <button
-        onclick="clearPaste()">
-        Clear
-      </button>
-
-    </div>
-
-    <div
-      id="pasteMessage"
-      class="message">
+    <div class="grid-scroll">
+      <table class="draw-grid" id="drawGrid"></table>
     </div>
 
   </div>
@@ -549,84 +483,72 @@ textarea:focus{
 </div>
 
 
-<!-- =====================================================
-     RECENT PAGE
-===================================================== -->
+<!-- ================= RECENT ================= -->
 
 <div id="recentPage" class="page">
 
+  <!-- PERMANENT STREAK BOARD -->
+
+  <div class="card">
+    <h2>🔥 Current Streak Board</h2>
+
+    <div id="streakBoard" class="streak-board"></div>
+  </div>
+
+
   <div class="card">
 
-    <div class="title">
-      📊 Recent Frequency
-    </div>
+    <h2>📊 Recent Frequency</h2>
 
     <div class="range-buttons">
 
-      <button
-        class="active"
+      <button class="secondary"
         onclick="setRecentRange(5,this)">
         5
       </button>
 
-      <button
+      <button class="secondary"
         onclick="setRecentRange(10,this)">
         10
       </button>
 
-      <button
+      <button class="secondary"
         onclick="setRecentRange(20,this)">
         20
       </button>
 
-      <button
+      <button class="secondary"
         onclick="setRecentRange(0,this)">
         All
       </button>
 
     </div>
 
-    <div
-      id="recentInfo"
-      class="muted">
-    </div>
-
     <br>
 
-    <div
-      id="recentChart"
-      class="chart">
+    <div class="graph-wrap">
+      <div id="recentGraph" class="graph"></div>
     </div>
 
   </div>
 
 
-  <!-- STREAKS -->
-
   <div class="card">
 
-    <div class="title">
-      🔥 Current Streaks
-    </div>
+    <h2>⚖️ Odd & Even — Recent Draws</h2>
 
-    <div id="streakGroups">
-      <div class="muted">
-        No draws yet.
+    <div class="odd-even">
+
+      <div class="stat-box">
+        <div>🟦 Even</div>
+        <div id="evenCount" class="stat-value">0</div>
       </div>
-    </div>
 
-  </div>
+      <div class="stat-box">
+        <div>🟨 Odd</div>
+        <div id="oddCount" class="stat-value">0</div>
+      </div>
 
-
-  <!-- RECENT GROUPS -->
-
-  <div class="card">
-
-    <div class="title">
-      📈 Frequency Groups
-    </div>
-
-    <div id="recentGroups">
     </div>
 
   </div>
@@ -634,155 +556,62 @@ textarea:focus{
 </div>
 
 
-<!-- =====================================================
-     STATS PAGE
-===================================================== -->
+<!-- ================= STATS ================= -->
 
 <div id="statsPage" class="page">
 
   <div class="card">
 
-    <div class="title">
-      📈 Frequency Groups
-    </div>
+    <h2>🏆 Most Frequent</h2>
 
-    <div id="frequencyGroups">
-      <div class="muted">
-        No draws yet.
-      </div>
-    </div>
+    <div id="mostFrequent" class="number-list"></div>
 
   </div>
 
 
   <div class="card">
 
-    <div class="title">
-      📋 Number Statistics
-    </div>
+    <h2>📉 Least Frequent</h2>
 
-    <div id="numberStats">
-      <div class="muted">
-        No draws yet.
-      </div>
-    </div>
+    <div id="leastFrequent" class="number-list"></div>
 
   </div>
 
 </div>
 
 
-<!-- =====================================================
-     HISTORY PAGE
-===================================================== -->
-
-<div id="historyPage" class="page">
-
-  <div class="card">
-
-    <div class="title">
-      📝 Draw History
-    </div>
-
-    <div id="history">
-      <div class="muted">
-        No draws yet.
-      </div>
-    </div>
-
-  </div>
-
-
-  <div class="card">
-
-    <div class="title">
-      🟩 24-Number Draw Grid
-    </div>
-
-    <div class="grid-scroll">
-
-      <div
-        id="drawGrid"
-        class="draw-grid">
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <div class="card">
-
-    <button
-      class="red"
-      onclick="clearAll()">
-
-      🧹 Clear All Draws
-
-    </button>
-
-  </div>
-
-</div>
-
-</div>
-
-
-<!-- =====================================================
-     BOTTOM NAV
-===================================================== -->
+<!-- ================= BOTTOM NAV ================= -->
 
 <div class="bottom-nav">
 
   <button
     class="nav-btn active"
     onclick="showPage('inputPage',this)">
-
-    <span class="nav-icon">
-      🏠
-    </span>
-
-    Input
-
+    🏠<br>Input
   </button>
 
+  <button
+    class="nav-btn"
+    onclick="showPage('gridPage',this)">
+    🟩<br>Grid
+  </button>
 
   <button
     class="nav-btn"
     onclick="showPage('recentPage',this)">
-
-    <span class="nav-icon">
-      📊
-    </span>
-
-    Recent
-
+    📊<br>Recent
   </button>
-
 
   <button
     class="nav-btn"
     onclick="showPage('statsPage',this)">
-
-    <span class="nav-icon">
-      📈
-    </span>
-
-    Stats
-
+    📈<br>Stats
   </button>
-
 
   <button
     class="nav-btn"
-    onclick="showPage('historyPage',this)">
-
-    <span class="nav-icon">
-      📋
-    </span>
-
-    History
-
+    onclick="showPage('inputPage',this)">
+    📋<br>History
   </button>
 
 </div>
@@ -790,323 +619,125 @@ textarea:focus{
 
 <script>
 
-/* =====================================================
-   SETTINGS
-===================================================== */
-
-const STORAGE_KEY =
-"condition1_number_history";
-
 let records = [];
-
-let selectedNumbers =
-new Set();
-
+let selectedNumbers = new Set();
 let recentRange = 5;
 
-
-/* =====================================================
-   NAVIGATION
-===================================================== */
-
-function showPage(pageId,button){
-
-  document
-    .querySelectorAll(".page")
-    .forEach(page => {
-      page.classList.remove("active");
-    });
-
-  const page =
-    document.getElementById(pageId);
-
-  if(page){
-    page.classList.add("active");
-  }
-
-  document
-    .querySelectorAll(".nav-btn")
-    .forEach(btn => {
-      btn.classList.remove("active");
-    });
-
-  if(button){
-    button.classList.add("active");
-  }
-
-  window.scrollTo(0,0);
-
-}
+const STORAGE_KEY = "condition1_number_history";
 
 
-/* =====================================================
-   LOAD SAVED DATA
-===================================================== */
+/* ================= LOAD ================= */
 
 function loadData(){
 
   try{
 
-    const saved =
-      localStorage.getItem(STORAGE_KEY);
+    const saved = localStorage.getItem(STORAGE_KEY);
 
     if(saved){
-
-      const parsed =
-        JSON.parse(saved);
-
-      if(Array.isArray(parsed)){
-        records = parsed;
-      }
-
+      records = JSON.parse(saved);
     }
 
   }catch(error){
-
-    console.log(
-      "Could not load saved data:",
-      error
-    );
 
     records = [];
 
   }
 
   renderAll();
-
 }
 
 
-/* =====================================================
-   CREATE KEYPAD
-===================================================== */
+/* ================= KEYPAD ================= */
 
 function createKeypad(){
 
-  const keypad =
-    document.getElementById("keypad");
-
-  if(!keypad){
-    return;
-  }
+  const keypad = document.getElementById("keypad");
 
   keypad.innerHTML = "";
 
-  for(
-    let number = 1;
-    number <= 24;
-    number++
-  ){
+  for(let i=1;i<=24;i++){
 
-    const button =
-      document.createElement("button");
+    const button = document.createElement("button");
 
     button.className = "key";
-
-    button.textContent = number;
-
-    button.type = "button";
+    button.textContent = i;
 
     button.onclick = function(){
 
-      toggleNumber(
-        number,
-        button
-      );
+      toggleNumber(i,button);
 
     };
 
     keypad.appendChild(button);
-
   }
-
 }
 
 
-/* =====================================================
-   SELECT NUMBER
-===================================================== */
+function toggleNumber(number,button){
 
-function toggleNumber(
-  number,
-  button
-){
-
-  if(
-    selectedNumbers.has(number)
-  ){
+  if(selectedNumbers.has(number)){
 
     selectedNumbers.delete(number);
-
-    button.classList.remove(
-      "selected"
-    );
+    button.classList.remove("selected");
 
   }else{
 
-    if(
-      selectedNumbers.size >= 12
-    ){
+    if(selectedNumbers.size >= 12){
 
-      showMessage(
-        "tapMessage",
-        "You can select only 12 numbers.",
+      showTapMessage(
+        "Maximum 12 numbers.",
         "error"
       );
 
       return;
-
     }
 
     selectedNumbers.add(number);
-
-    button.classList.add(
-      "selected"
-    );
-
+    button.classList.add("selected");
   }
 
   updateSelection();
-
 }
 
-
-/* =====================================================
-   UPDATE SELECTED NUMBERS
-===================================================== */
 
 function updateSelection(){
 
-  const count =
-    document.getElementById(
-      "selectedCount"
-    );
+  document.getElementById("selectedCount").textContent =
+    selectedNumbers.size + "/12";
 
-  const display =
-    document.getElementById(
-      "selectedNumbers"
-    );
+  const nums = [...selectedNumbers]
+    .sort((a,b)=>a-b);
 
-  if(count){
-
-    count.textContent =
-      selectedNumbers.size;
-
-  }
-
-  if(display){
-
-    const numbers =
-      [...selectedNumbers]
-        .sort((a,b)=>a-b);
-
-    display.textContent =
-      numbers.length
-      ? numbers.join(" · ")
-      : "None";
-
-  }
-
+  document.getElementById("selectedNumbers").textContent =
+    nums.length ? nums.join(" · ") : "None";
 }
 
-
-/* =====================================================
-   RESET KEYPAD
-===================================================== */
 
 function resetSelection(){
 
   selectedNumbers.clear();
 
-  document
-    .querySelectorAll(".key")
-    .forEach(button => {
-
-      button.classList.remove(
-        "selected"
-      );
-
+  document.querySelectorAll(".key")
+    .forEach(button=>{
+      button.classList.remove("selected");
     });
 
   updateSelection();
 
+  showTapMessage("", "");
 }
 
 
-/* =====================================================
-   SAVE KEYPAD DRAW
-===================================================== */
-
-function saveTapDraw(){
-
-  if(
-    selectedNumbers.size !== 12
-  ){
-
-    showMessage(
-      "tapMessage",
-      "Please select exactly 12 numbers.",
-      "error"
-    );
-
-    return;
-
-  }
-
-  const numbers =
-    [...selectedNumbers]
-      .sort((a,b)=>a-b);
-
-  addDraw(numbers);
-
-  resetSelection();
-
-  showMessage(
-    "tapMessage",
-    "Draw added successfully!",
-    "success"
-  );
-
-}
-
-
-/* =====================================================
-   MESSAGES
-===================================================== */
-
-function showMessage(
-  id,
-  text,
-  type
-){
-
-  const box =
-    document.getElementById(id);
-
-  if(!box){
-    return;
-  }
-
-  box.textContent = text;
-
-  box.className =
-    "message show " + type;
-
-}
-
-
-/* =====================================================
-   ADD DRAW
-===================================================== */
+/* ================= ADD DRAW ================= */
 
 function addDraw(numbers){
 
   records.push({
 
-    numbers: numbers,
+    numbers:numbers,
 
-    time:
-      new Date().toISOString()
+    time:new Date().toISOString()
 
   });
 
@@ -1116,269 +747,223 @@ function addDraw(numbers){
   );
 
   renderAll();
-
 }
 
 
-/* =====================================================
-   CLEAR PASTE
-===================================================== */
+/* ================= SAVE KEYPAD ================= */
 
-function clearPaste(){
+function saveTapDraw(){
 
-  const box =
-    document.getElementById(
-      "pasteInput"
-    );
+  if(selectedNumbers.size !== 12){
 
-  if(box){
-    box.value = "";
-  }
-
-}
-
-
-/* =====================================================
-   PARSE PASTED DRAWS
-===================================================== */
-
-function parsePastedDraws(){
-
-  const textarea =
-    document.getElementById(
-      "pasteInput"
-    );
-
-  if(!textarea){
-
-    return {
-      draws: [],
-      errors: ["Paste box not found."]
-    };
-
-  }
-
-  const text =
-    textarea.value.trim();
-
-  if(!text){
-
-    return {
-      draws: [],
-      errors: [
-        "Please paste at least one draw."
-      ]
-    };
-
-  }
-
-  const lines =
-    text.split(/\r?\n/);
-
-  const draws = [];
-
-  const errors = [];
-
-
-  lines.forEach(
-    (line,index) => {
-
-      if(!line.trim()){
-        return;
-      }
-
-      const values =
-        line
-          .trim()
-          .split(/[\s,;]+/)
-          .map(Number);
-
-
-      if(values.length !== 12){
-
-        errors.push(
-          `Row ${index+1}: needs exactly 12 numbers.`
-        );
-
-        return;
-
-      }
-
-
-      if(
-        values.some(
-          number =>
-            !Number.isInteger(number) ||
-            number < 1 ||
-            number > 24
-        )
-      ){
-
-        errors.push(
-          `Row ${index+1}: numbers must be integers from 1–24.`
-        );
-
-        return;
-
-      }
-
-
-      if(
-        new Set(values).size !== 12
-      ){
-
-        errors.push(
-          `Row ${index+1}: duplicate numbers found.`
-        );
-
-        return;
-
-      }
-
-
-      draws.push(
-        [...values]
-          .sort((a,b)=>a-b)
-      );
-
-    }
-  );
-
-
-  return {
-    draws,
-    errors
-  };
-
-}
-
-
-/* =====================================================
-   SAVE PASTED DRAWS
-===================================================== */
-
-function savePastedDraws(){
-
-  const result =
-    parsePastedDraws();
-
-
-  if(result.errors.length){
-
-    showMessage(
-      "pasteMessage",
-      result.errors.join(" "),
+    showTapMessage(
+      "Please select exactly 12 numbers.",
       "error"
     );
 
     return;
+  }
+
+  const numbers = [...selectedNumbers]
+    .sort((a,b)=>a-b);
+
+  addDraw(numbers);
+
+  resetSelection();
+
+  showTapMessage(
+    "Draw added successfully!",
+    "success"
+  );
+}
+
+
+/* ================= PASTE ================= */
+
+function parsePastedDraws(){
+
+  const text =
+    document.getElementById("pasteInput").value.trim();
+
+  if(!text){
+
+    return {
+      draws:[],
+      errors:["Nothing was entered."]
+    };
 
   }
 
+  const lines = text.split(/\r?\n/);
 
-  result.draws.forEach(
-    draw => {
+  const draws = [];
+  const errors = [];
 
-      records.push({
+  lines.forEach((line,index)=>{
 
-        numbers: draw,
+    if(!line.trim()) return;
 
-        time:
-          new Date().toISOString()
+    const rowNumber = index + 1;
 
-      });
+    const parts = line
+      .trim()
+      .split(/[\s,;]+/)
+      .filter(Boolean);
 
+    const numbers = parts.map(Number);
+
+    if(numbers.some(n=>!Number.isInteger(n))){
+
+      errors.push(
+        "Row " + rowNumber +
+        ": contains an invalid number."
+      );
+
+      return;
     }
-  );
 
+    if(numbers.length !== 12){
+
+      errors.push(
+        "Row " + rowNumber +
+        ": must contain exactly 12 numbers."
+      );
+
+      return;
+    }
+
+    if(numbers.some(n=>n < 1 || n > 24)){
+
+      errors.push(
+        "Row " + rowNumber +
+        ": numbers must be between 1 and 24."
+      );
+
+      return;
+    }
+
+    if(new Set(numbers).size !== 12){
+
+      errors.push(
+        "Row " + rowNumber +
+        ": duplicate numbers found."
+      );
+
+      return;
+    }
+
+    draws.push(
+      [...new Set(numbers)].sort((a,b)=>a-b)
+    );
+
+  });
+
+  return {draws,errors};
+}
+
+
+function savePastedDraws(){
+
+  const result = parsePastedDraws();
+
+  const message =
+    document.getElementById("pasteMessage");
+
+  if(result.draws.length === 0){
+
+    message.className = "message error";
+
+    message.textContent =
+      result.errors.join(" ");
+
+    return;
+  }
+
+  result.draws.forEach(draw=>{
+    records.push({
+      numbers:draw,
+      time:new Date().toISOString()
+    });
+  });
 
   localStorage.setItem(
     STORAGE_KEY,
     JSON.stringify(records)
   );
 
+  document.getElementById("pasteInput").value = "";
 
-  const textarea =
-    document.getElementById(
-      "pasteInput"
-    );
+  if(result.errors.length){
 
-  if(textarea){
-    textarea.value = "";
+    message.className = "message error";
+
+    message.textContent =
+      result.draws.length +
+      " draw(s) saved. " +
+      result.errors.join(" ");
+
+  }else{
+
+    message.className = "message success";
+
+    message.textContent =
+      result.draws.length +
+      " draw(s) saved successfully.";
+
   }
 
-
   renderAll();
-
-
-  showMessage(
-    "pasteMessage",
-    `${result.draws.length} draw(s) added successfully!`,
-    "success"
-  );
-
 }
 
 
-/* =====================================================
-   GET FREQUENCY COUNTS
-===================================================== */
+/* ================= MESSAGES ================= */
 
-function getCounts(data){
+function showTapMessage(text,type){
 
-  const counts =
-    Array(25).fill(0);
+  const element =
+    document.getElementById("tapMessage");
 
-  data.forEach(
-    record => {
+  element.textContent = text;
 
-      if(
-        !record ||
-        !Array.isArray(record.numbers)
-      ){
-        return;
+  element.className =
+    type ? "message " + type : "message";
+}
+
+
+/* ================= COUNTS ================= */
+
+function getCounts(data = records){
+
+  const counts = Array(25).fill(0);
+
+  data.forEach(record=>{
+
+    if(!record || !Array.isArray(record.numbers))
+      return;
+
+    record.numbers.forEach(number=>{
+
+      if(number >= 1 && number <= 24){
+        counts[number]++;
       }
 
-      record.numbers.forEach(
-        number => {
+    });
 
-          if(
-            number >= 1 &&
-            number <= 24
-          ){
-
-            counts[number]++;
-
-          }
-
-        }
-      );
-
-    }
-  );
+  });
 
   return counts;
-
 }
 
 
-/* =====================================================
-   CURRENT STREAK
-===================================================== */
+/* ================= CURRENT STREAK ================= */
 
 function getCurrentStreak(number){
 
   let streak = 0;
 
+  for(let i=records.length-1;i>=0;i--){
 
-  for(
-    let i = records.length - 1;
-    i >= 0;
-    i--
-  ){
-
-    const record =
-      records[i];
+    const record = records[i];
 
     if(
       record &&
@@ -1396,15 +981,78 @@ function getCurrentStreak(number){
 
   }
 
-
   return streak;
-
 }
 
 
-/* =====================================================
-   RECENT RECORDS
-===================================================== */
+/* ================= STREAK BOARD ================= */
+
+function renderStreakBoard(){
+
+  const board =
+    document.getElementById("streakBoard");
+
+  board.innerHTML = "";
+
+  if(!records.length){
+
+    board.innerHTML =
+      "<div class='number-pill'>No draws yet</div>";
+
+    return;
+  }
+
+  const groups = {};
+
+  for(let n=1;n<=24;n++){
+
+    const streak = getCurrentStreak(n);
+
+    if(streak > 0){
+
+      if(!groups[streak]){
+        groups[streak] = [];
+      }
+
+      groups[streak].push(n);
+
+    }
+
+  }
+
+  const streaks =
+    Object.keys(groups)
+      .map(Number)
+      .sort((a,b)=>b-a);
+
+  if(!streaks.length){
+
+    board.innerHTML =
+      "<div class='number-pill'>No current streaks</div>";
+
+    return;
+  }
+
+  streaks.forEach(streak=>{
+
+    const item =
+      document.createElement("div");
+
+    item.className = "streak-item";
+
+    item.innerHTML =
+      "<span class='streak-fire'>🔥 ×" +
+      streak +
+      "</span> → " +
+      groups[streak].join(" · ");
+
+    board.appendChild(item);
+
+  });
+}
+
+
+/* ================= RECENT DATA ================= */
 
 function getRecentRecords(){
 
@@ -1414,1008 +1062,441 @@ function getRecentRecords(){
 
   }
 
-
   return records.slice(
-    Math.max(
-      0,
-      records.length - recentRange
-    )
+    Math.max(0,records.length-recentRange)
   );
-
 }
 
 
-/* =====================================================
-   SET RECENT RANGE
-===================================================== */
+/* ================= RECENT GRAPH ================= */
 
-function setRecentRange(
-  amount,
-  button
-){
+function renderRecentGraph(){
 
-  recentRange = amount;
+  const graph =
+    document.getElementById("recentGraph");
 
+  graph.innerHTML = "";
 
-  const page =
-    document.getElementById(
-      "recentPage"
-    );
+  const recent = getRecentRecords();
 
+  const counts = getCounts(recent);
 
-  if(page){
+  const maxCount =
+    Math.max(...counts.slice(1),1);
 
-    page
-      .querySelectorAll(
-        ".range-buttons button"
-      )
-      .forEach(
-        btn => {
-          btn.classList.remove(
-            "active"
-          );
-        }
-      );
+  for(let n=1;n<=24;n++){
 
-  }
+    const container =
+      document.createElement("div");
 
-
-  if(button){
-
-    button.classList.add(
-      "active"
-    );
-
-  }
-
-
-  renderRecent();
-
-}
-
-
-/* =====================================================
-   RECENT GRAPH
-===================================================== */
-
-function renderRecent(){
-
-  const recent =
-    getRecentRecords();
-
-
-  const counts =
-    getCounts(recent);
-
-
-  const info =
-    document.getElementById(
-      "recentInfo"
-    );
-
-
-  if(info){
-
-    info.textContent =
-      `${recent.length} draw${
-        recent.length === 1
-        ? ""
-        : "s"
-      } analyzed`;
-
-  }
-
-
-  const chart =
-    document.getElementById(
-      "recentChart"
-    );
-
-
-  if(!chart){
-    return;
-  }
-
-
-  chart.innerHTML = "";
-
-
-  if(!recent.length){
-
-    chart.innerHTML =
-      `<div class="muted">
-        No draws yet.
-      </div>`;
-
-    const groups =
-      document.getElementById(
-        "recentGroups"
-      );
-
-    if(groups){
-      groups.innerHTML = "";
-    }
-
-    return;
-
-  }
-
-
-  const max =
-    Math.max(
-      ...counts.slice(1)
-    );
-
-
-  /* CREATE 24 BARS */
-
-  for(
-    let number = 1;
-    number <= 24;
-    number++
-  ){
-
-    const wrap =
-      document.createElement(
-        "div"
-      );
-
-    wrap.className =
-      "bar-wrap";
-
-
-    /* STREAK */
-
-    const streakBox =
-      document.createElement(
-        "div"
-      );
-
-    streakBox.className =
-      "streak";
-
+    container.className =
+      "bar-container";
 
     const streak =
-      getCurrentStreak(
-        number
-      );
-
+      getCurrentStreak(n);
 
     if(streak >= 2){
 
-      streakBox.textContent =
-        `🔥×${streak}`;
+      const label =
+        document.createElement("div");
 
-    }else{
+      label.className =
+        "streak-label";
 
-      streakBox.textContent =
-        "";
+      label.textContent =
+        "🔥×" + streak;
 
+      container.appendChild(label);
     }
-
-
-    /* COUNT */
-
-    const count =
-      document.createElement(
-        "div"
-      );
-
-    count.className =
-      "bar-count";
-
-    count.textContent =
-      counts[number];
-
-
-    /* BAR */
 
     const bar =
-      document.createElement(
-        "div"
-      );
+      document.createElement("div");
 
-    bar.className =
-      "bar";
-
+    bar.className = "bar";
 
     const height =
-      max > 0
-      ? (
-          counts[number] /
-          max
-        ) * 170
-      : 2;
-
+      counts[n] === 0
+      ? 4
+      : Math.max(
+          8,
+          (counts[n]/maxCount)*165
+        );
 
     bar.style.height =
-      Math.max(
-        2,
-        height
-      ) + "px";
+      height + "px";
 
+    bar.title =
+      n + ": " +
+      counts[n] +
+      " time(s)";
 
-    /* NUMBER */
+    container.appendChild(bar);
 
-    const label =
-      document.createElement(
-        "div"
-      );
+    const number =
+      document.createElement("div");
 
-    label.className =
+    number.className =
       "bar-number";
 
-    label.textContent =
-      number;
+    number.textContent = n;
 
+    container.appendChild(number);
 
-    wrap.appendChild(
-      streakBox
-    );
-
-    wrap.appendChild(
-      count
-    );
-
-    wrap.appendChild(
-      bar
-    );
-
-    wrap.appendChild(
-      label
-    );
-
-
-    chart.appendChild(
-      wrap
-    );
-
+    graph.appendChild(container);
   }
-
-
-  renderRecentGroups();
-
 }
 
 
-/* =====================================================
-   RECENT FREQUENCY GROUPS
-===================================================== */
+/* ================= ODD / EVEN ================= */
 
-function renderRecentGroups(){
+function renderOddEven(){
 
-  const box =
-    document.getElementById(
-      "recentGroups"
-    );
+  const recent = getRecentRecords();
 
-  if(!box){
-    return;
-  }
+  let even = 0;
+  let odd = 0;
 
+  recent.forEach(record=>{
 
-  const recent =
-    getRecentRecords();
+    record.numbers.forEach(n=>{
 
-  const counts =
-    getCounts(recent);
+      if(n % 2 === 0){
+        even++;
+      }else{
+        odd++;
+      }
 
+    });
 
-  if(!recent.length){
+  });
 
-    box.innerHTML =
-      `<div class="muted">
-        No draws yet.
-      </div>`;
+  document.getElementById("evenCount")
+    .textContent = even;
 
-    return;
-
-  }
-
-
-  const groups = {};
-
-
-  for(
-    let number = 1;
-    number <= 24;
-    number++
-  ){
-
-    const count =
-      counts[number];
-
-
-    if(!groups[count]){
-      groups[count] = [];
-    }
-
-
-    groups[count].push(
-      number
-    );
-
-  }
-
-
-  const sorted =
-    Object.keys(groups)
-      .map(Number)
-      .sort((a,b)=>b-a);
-
-
-  let html = "";
-
-
-  sorted.forEach(
-    count => {
-
-      html += `
-
-        <div class="group">
-
-          <div class="group-title">
-            ${count}/${recent.length}
-          </div>
-
-          <div class="group-numbers">
-            ${groups[count].join(" · ")}
-          </div>
-
-        </div>
-
-      `;
-
-    }
-  );
-
-
-  box.innerHTML =
-    html;
-
+  document.getElementById("oddCount")
+    .textContent = odd;
 }
 
 
-/* =====================================================
-   STREAK GROUPS
-===================================================== */
+/* ================= RANGE ================= */
 
-function renderStreakGroups(){
+function setRecentRange(range,button){
 
-  const box =
-    document.getElementById(
-      "streakGroups"
-    );
+  recentRange = range;
 
-  if(!box){
-    return;
+  document
+    .querySelectorAll(".range-buttons button")
+    .forEach(btn=>{
+      btn.classList.remove("active");
+    });
+
+  button.classList.add("active");
+
+  renderRecentGraph();
+  renderOddEven();
+}
+
+
+/* ================= MOST / LEAST ================= */
+
+function renderMostLeast(){
+
+  const counts = getCounts();
+
+  const values = [];
+
+  for(let n=1;n<=24;n++){
+
+    values.push({
+      number:n,
+      count:counts[n]
+    });
+
   }
 
+  const highest =
+    Math.max(...values.map(x=>x.count));
+
+  const lowest =
+    Math.min(...values.map(x=>x.count));
+
+  const most =
+    values.filter(x=>x.count===highest);
+
+  const least =
+    values.filter(x=>x.count===lowest);
+
+  const mostBox =
+    document.getElementById("mostFrequent");
+
+  const leastBox =
+    document.getElementById("leastFrequent");
+
+  mostBox.innerHTML = "";
+  leastBox.innerHTML = "";
 
   if(!records.length){
 
-    box.innerHTML =
-      `<div class="muted">
-        No draws yet.
-      </div>`;
+    mostBox.innerHTML =
+      "<div class='number-pill'>No data</div>";
+
+    leastBox.innerHTML =
+      "<div class='number-pill'>No data</div>";
 
     return;
-
   }
 
+  most.forEach(item=>{
 
-  const groups = {};
+    const pill =
+      document.createElement("div");
+
+    pill.className = "number-pill";
+
+    pill.textContent =
+      item.number + " (" +
+      item.count + ")";
+
+    mostBox.appendChild(pill);
+
+  });
+
+  least.forEach(item=>{
+
+    const pill =
+      document.createElement("div");
+
+    pill.className = "number-pill";
+
+    pill.textContent =
+      item.number + " (" +
+      item.count + ")";
+
+    leastBox.appendChild(pill);
+
+  });
+}
 
 
-  for(
-    let number = 1;
-    number <= 24;
-    number++
-  ){
+/* ================= DRAW GRID ================= */
+
+function renderDrawGrid(){
+
+  const table =
+    document.getElementById("drawGrid");
+
+  table.innerHTML = "";
+
+  /* HEADER */
+
+  const header =
+    document.createElement("tr");
+
+  const first =
+    document.createElement("th");
+
+  first.className = "draw-label";
+
+  first.textContent = "Draw";
+
+  header.appendChild(first);
+
+  for(let n=1;n<=24;n++){
+
+    const th =
+      document.createElement("th");
 
     const streak =
-      getCurrentStreak(
-        number
-      );
-
+      getCurrentStreak(n);
 
     if(streak >= 2){
 
-      if(!groups[streak]){
-        groups[streak] = [];
-      }
+      const streakEl =
+        document.createElement("span");
 
-      groups[streak].push(
-        number
-      );
+      streakEl.className =
+        "grid-streak";
 
-    }
+      streakEl.textContent =
+        "🔥×" + streak;
 
-  }
-
-
-  const streaks =
-    Object.keys(groups)
-      .map(Number)
-      .sort((a,b)=>b-a);
-
-
-  if(!streaks.length){
-
-    box.innerHTML =
-      `<div class="muted">
-        No current streaks of 2 or more.
-      </div>`;
-
-    return;
-
-  }
-
-
-  let html = "";
-
-
-  streaks.forEach(
-    streak => {
-
-      html += `
-
-        <div class="group">
-
-          <div class="group-title">
-            🔥 ×${streak}
-          </div>
-
-          <div class="group-numbers">
-            ${groups[streak].join(" · ")}
-          </div>
-
-        </div>
-
-      `;
+      th.appendChild(streakEl);
 
     }
-  );
 
+    const num =
+      document.createElement("span");
 
-  box.innerHTML =
-    html;
+    num.className =
+      "grid-number";
 
-}
+    num.textContent = n;
 
+    th.appendChild(num);
 
-/* =====================================================
-   ALL FREQUENCY GROUPS
-===================================================== */
-
-function renderFrequencyGroups(){
-
-  const box =
-    document.getElementById(
-      "frequencyGroups"
-    );
-
-  if(!box){
-    return;
+    header.appendChild(th);
   }
 
-
-  if(!records.length){
-
-    box.innerHTML =
-      `<div class="muted">
-        No draws yet.
-      </div>`;
-
-    return;
-
-  }
+  table.appendChild(header);
 
 
-  const counts =
-    getCounts(records);
+  /* DRAW ROWS */
+
+  const newestFirst =
+    [...records].reverse();
+
+  newestFirst.forEach((record,index)=>{
+
+    const row =
+      document.createElement("tr");
+
+    const label =
+      document.createElement("td");
+
+    label.className = "draw-label";
+
+    label.textContent =
+      "Draw " + (index+1);
+
+    row.appendChild(label);
 
 
-  const groups = {};
+    for(let n=1;n<=24;n++){
 
+      const cell =
+        document.createElement("td");
 
-  for(
-    let number = 1;
-    number <= 24;
-    number++
-  ){
+      if(record.numbers.includes(n)){
 
-    const count =
-      counts[number];
+        cell.classList.add("drawn");
 
-
-    if(!groups[count]){
-      groups[count] = [];
-    }
-
-
-    groups[count].push(
-      number
-    );
-
-  }
-
-
-  const sorted =
-    Object.keys(groups)
-      .map(Number)
-      .sort((a,b)=>b-a);
-
-
-  let html = "";
-
-
-  sorted.forEach(
-    count => {
-
-      html += `
-
-        <div class="group">
-
-          <div class="group-title">
-            ${count}/${records.length}
-          </div>
-
-          <div class="group-numbers">
-            ${groups[count].join(" · ")}
-          </div>
-
-        </div>
-
-      `;
-
-    }
-  );
-
-
-  box.innerHTML =
-    html;
-
-}
-
-
-/* =====================================================
-   NUMBER STATISTICS
-===================================================== */
-
-function renderNumberStats(){
-
-  const box =
-    document.getElementById(
-      "numberStats"
-    );
-
-  if(!box){
-    return;
-  }
-
-
-  if(!records.length){
-
-    box.innerHTML =
-      `<div class="muted">
-        No draws yet.
-      </div>`;
-
-    return;
-
-  }
-
-
-  const counts =
-    getCounts(records);
-
-
-  let html =
-    `<div class="stats-grid">`;
-
-
-  for(
-    let number = 1;
-    number <= 24;
-    number++
-  ){
-
-    let lastSeen =
-      "Never";
-
-
-    for(
-      let i = records.length - 1;
-      i >= 0;
-      i--
-    ){
-
-      if(
-        records[i].numbers
-          .includes(number)
-      ){
-
-        const ago =
-          records.length - i;
-
-        lastSeen =
-          `${ago} draw${
-            ago === 1
-            ? ""
-            : "s"
-          } ago`;
-
-        break;
+        cell.textContent = "●";
 
       }
 
+      row.appendChild(cell);
+
     }
 
+    table.appendChild(row);
 
-    const percentage =
-      (
-        counts[number] /
-        records.length *
-        100
-      ).toFixed(1);
-
-
-    html += `
-
-      <div class="stat">
-
-        <div class="stat-name">
-          Number ${number}
-        </div>
-
-        <div class="stat-main">
-          ${counts[number]} time${
-            counts[number] === 1
-            ? ""
-            : "s"
-          }
-        </div>
-
-        <div class="stat-name">
-          ${percentage}%
-        </div>
-
-        <div class="stat-name">
-          Last: ${lastSeen}
-        </div>
-
-      </div>
-
-    `;
-
-  }
-
-
-  html +=
-    `</div>`;
-
-
-  const max =
-    Math.max(
-      ...counts.slice(1)
-    );
-
-
-  const min =
-    Math.min(
-      ...counts.slice(1)
-    );
-
-
-  const most = [];
-  const least = [];
-
-
-  for(
-    let number = 1;
-    number <= 24;
-    number++
-  ){
-
-    if(
-      counts[number] === max
-    ){
-      most.push(number);
-    }
-
-
-    if(
-      counts[number] === min
-    ){
-      least.push(number);
-    }
-
-  }
-
-
-  html += `
-
-    <br>
-
-    <div class="group">
-
-      <div class="group-title">
-        Most Frequent
-      </div>
-
-      <div class="group-numbers">
-        ${most.join(" · ")}
-        — ${max}/${records.length}
-      </div>
-
-    </div>
-
-
-    <div class="group">
-
-      <div class="group-title">
-        Least Frequent
-      </div>
-
-      <div class="group-numbers">
-        ${least.join(" · ")}
-        — ${min}/${records.length}
-      </div>
-
-    </div>
-
-  `;
-
-
-  box.innerHTML =
-    html;
+  });
 
 }
 
 
-/* =====================================================
-   HISTORY
-===================================================== */
+/* ================= HISTORY ================= */
 
 function renderHistory(){
 
   const box =
-    document.getElementById(
-      "history"
-    );
+    document.getElementById("historyPreview");
 
-  if(!box){
-    return;
-  }
-
+  box.innerHTML = "";
 
   if(!records.length){
 
     box.innerHTML =
-      `<div class="muted">
-        No draws yet.
-      </div>`;
+      "<div class='history-item'>No saved draws yet.</div>";
 
     return;
-
   }
 
+  const newestFirst =
+    [...records].reverse();
 
-  let html = "";
+  newestFirst.forEach((record,index)=>{
 
+    const item =
+      document.createElement("div");
 
-  [...records]
-    .reverse()
-    .forEach(
-      record => {
+    item.className =
+      "history-item";
 
-        const date =
-          new Date(
-            record.time
-          );
+    const date =
+      new Date(record.time);
 
+    item.innerHTML =
+      "<div class='history-time'>" +
+      date.toLocaleString() +
+      "</div>" +
 
-        html += `
+      "<div class='history-numbers'>" +
+      record.numbers.join(" · ") +
+      "</div>";
 
-          <div class="history-item">
+    box.appendChild(item);
 
-            <div class="history-time">
-              ${date.toLocaleString()}
-            </div>
-
-            <div class="history-numbers">
-              ${record.numbers.join(" · ")}
-            </div>
-
-          </div>
-
-        `;
-
-      }
-    );
-
-
-  box.innerHTML =
-    html;
+  });
 
 }
 
 
-/* =====================================================
-   DRAW GRID
-===================================================== */
-
-function renderDrawGrid(){
-
-  const box =
-    document.getElementById(
-      "drawGrid"
-    );
-
-  if(!box){
-    return;
-  }
-
-
-  if(!records.length){
-
-    box.innerHTML =
-      `<div class="muted">
-        No draws yet.
-      </div>`;
-
-    return;
-
-  }
-
-
-  let html = `
-
-    <div class="grid-row">
-
-      <div class="grid-cell">
-        #
-      </div>
-
-      ${
-        Array.from(
-          {length:24},
-          (_,index) =>
-            `<div class="grid-cell">
-              ${index+1}
-            </div>`
-        ).join("")
-      }
-
-    </div>
-
-  `;
-
-
-  [...records]
-    .reverse()
-    .forEach(
-      (record,index) => {
-
-        html += `
-
-          <div class="grid-row">
-
-            <div class="grid-cell">
-              ${index+1}
-            </div>
-
-            ${
-              Array.from(
-                {length:24},
-                (_,numberIndex) => {
-
-                  const number =
-                    numberIndex + 1;
-
-                  const drawn =
-                    record.numbers
-                      .includes(number);
-
-
-                  return `
-
-                    <div class="grid-cell ${
-                      drawn
-                      ? "drawn"
-                      : ""
-                    }">
-
-                      ${
-                        drawn
-                        ? "●"
-                        : ""
-                      }
-
-                    </div>
-
-                  `;
-
-                }
-              ).join("")
-            }
-
-          </div>
-
-        `;
-
-      }
-    );
-
-
-  box.innerHTML =
-    html;
-
-}
-
-
-/* =====================================================
-   CLEAR ALL
-===================================================== */
+/* ================= CLEAR ================= */
 
 function clearAll(){
 
-  if(!records.length){
-    return;
-  }
-
+  if(!records.length) return;
 
   const confirmed =
     confirm(
       "Delete all saved draws?"
     );
 
-
-  if(!confirmed){
-    return;
-  }
-
+  if(!confirmed) return;
 
   records = [];
 
-
-  localStorage.removeItem(
-    STORAGE_KEY
-  );
-
-
-  resetSelection();
+  localStorage.removeItem(STORAGE_KEY);
 
   renderAll();
+}
+
+
+/* ================= NAVIGATION ================= */
+
+function showPage(pageId,button){
+
+  document
+    .querySelectorAll(".page")
+    .forEach(page=>{
+      page.classList.remove("active");
+    });
+
+  document
+    .getElementById(pageId)
+    .classList.add("active");
+
+  document
+    .querySelectorAll(".nav-btn")
+    .forEach(btn=>{
+      btn.classList.remove("active");
+    });
+
+  button.classList.add("active");
+
+  if(pageId === "gridPage"){
+    renderDrawGrid();
+  }
 
 }
 
 
-/* =====================================================
-   RENDER EVERYTHING
-===================================================== */
+/* ================= ALL RENDER ================= */
 
 function renderAll(){
 
-  renderRecent();
-
-  renderStreakGroups();
-
-  renderFrequencyGroups();
-
-  renderNumberStats();
-
-  renderHistory();
-
+  renderStreakBoard();
+  renderRecentGraph();
+  renderOddEven();
+  renderMostLeast();
   renderDrawGrid();
+  renderHistory();
 
 }
 
 
-/* =====================================================
-   START WEBSITE
-===================================================== */
+/* ================= START ================= */
 
 createKeypad();
 
@@ -2424,4 +1505,4 @@ loadData();
 </script>
 
 </body>
-  </html>
+</html>
