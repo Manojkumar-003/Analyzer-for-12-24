@@ -1,0 +1,1445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>12 × 24 Number Analyzer</title>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    background:#0b0f14;
+    color:#f2f2f2;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+.container{
+    width:100%;
+    max-width:850px;
+    margin:auto;
+    padding:15px;
+}
+
+h1{
+    text-align:center;
+    margin:10px 0 5px;
+    font-size:27px;
+}
+
+.subtitle{
+    text-align:center;
+    color:#9aa4af;
+    font-size:14px;
+    margin-bottom:18px;
+}
+
+.card{
+    background:#151b23;
+    border:1px solid #27303b;
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:16px;
+}
+
+.card h2{
+    margin-top:0;
+    font-size:19px;
+}
+
+.streak{
+    text-align:center;
+    background:#171d26;
+    border:1px solid #303945;
+    border-radius:14px;
+    padding:15px;
+    margin-bottom:16px;
+}
+
+.streak-title{
+    color:#9aa4af;
+    font-size:13px;
+    margin-bottom:5px;
+}
+
+.streak-number{
+    font-size:25px;
+    font-weight:bold;
+}
+
+.keypad{
+    display:grid;
+    grid-template-columns:repeat(6,1fr);
+    gap:7px;
+}
+
+.number-btn{
+    border:none;
+    border-radius:9px;
+    background:#252d37;
+    color:white;
+    font-size:16px;
+    font-weight:bold;
+    padding:12px 3px;
+    cursor:pointer;
+}
+
+.number-btn.selected{
+    background:#20b866;
+    color:#07150d;
+}
+
+.selected-info{
+    margin-top:13px;
+    text-align:center;
+    color:#c5cbd2;
+}
+
+.selected-numbers{
+    margin-top:7px;
+    color:#54dc91;
+    font-weight:bold;
+}
+
+button.action{
+    width:100%;
+    border:none;
+    border-radius:10px;
+    padding:12px;
+    margin-top:12px;
+    background:#287cff;
+    color:white;
+    font-size:15px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+button.secondary{
+    background:#343d49;
+}
+
+button.danger{
+    background:#d83c4b;
+}
+
+.message{
+    margin-top:10px;
+    text-align:center;
+    font-size:14px;
+    min-height:18px;
+}
+
+.message.success{
+    color:#45dc8b;
+}
+
+.message.error{
+    color:#ff6875;
+}
+
+textarea{
+    width:100%;
+    min-height:130px;
+    resize:vertical;
+    border-radius:10px;
+    border:1px solid #303a46;
+    background:#0e1319;
+    color:white;
+    padding:12px;
+    font-size:14px;
+    outline:none;
+}
+
+.help{
+    color:#929ca8;
+    font-size:12px;
+    line-height:1.5;
+    margin-top:8px;
+}
+
+.range-buttons{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:7px;
+}
+
+.range-btn{
+    border:none;
+    background:#252d37;
+    color:#ddd;
+    border-radius:8px;
+    padding:10px 4px;
+    font-weight:bold;
+}
+
+.range-btn.active{
+    background:#287cff;
+    color:white;
+}
+
+.graph-wrapper{
+    overflow-x:auto;
+}
+
+.bar-chart{
+    min-width:650px;
+    height:270px;
+    display:flex;
+    align-items:flex-end;
+    gap:7px;
+    padding:15px 8px 28px;
+    border-bottom:1px solid #37414e;
+}
+
+.bar-column{
+    flex:1;
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-end;
+    align-items:center;
+    position:relative;
+}
+
+.bar-value{
+    font-size:10px;
+    color:#bfc7d0;
+    margin-bottom:3px;
+}
+
+.bar{
+    width:100%;
+    max-width:28px;
+    min-height:2px;
+    background:#287cff;
+    border-radius:5px 5px 0 0;
+}
+
+.bar-label{
+    position:absolute;
+    bottom:-22px;
+    font-size:10px;
+    color:#aeb7c2;
+}
+
+.group{
+    background:#0f141a;
+    border:1px solid #252e39;
+    border-radius:10px;
+    padding:11px;
+    margin-bottom:8px;
+}
+
+.group-title{
+    font-weight:bold;
+    color:#dce2e8;
+    margin-bottom:6px;
+}
+
+.group-numbers{
+    color:#55d98d;
+    line-height:1.7;
+    word-break:break-word;
+}
+
+.stat-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:8px;
+}
+
+.stat-box{
+    background:#0f141a;
+    border:1px solid #252e39;
+    border-radius:10px;
+    padding:11px;
+}
+
+.stat-label{
+    color:#929ca8;
+    font-size:12px;
+}
+
+.stat-value{
+    margin-top:5px;
+    font-size:15px;
+    font-weight:bold;
+}
+
+.grid-scroll{
+    overflow-x:auto;
+}
+
+.draw-grid{
+    min-width:720px;
+    border-collapse:collapse;
+    width:100%;
+}
+
+.draw-grid th,
+.draw-grid td{
+    border:1px solid #303944;
+    text-align:center;
+    padding:6px 4px;
+    font-size:11px;
+}
+
+.draw-grid th{
+    background:#202833;
+    color:#c8d0d9;
+}
+
+.draw-cell{
+    background:#11171e;
+    color:#65717e;
+    font-weight:bold;
+}
+
+.draw-cell.drawn{
+    background:#20b866;
+    color:#07150d;
+}
+
+.history-item{
+    background:#0f141a;
+    border:1px solid #252e39;
+    border-radius:10px;
+    padding:11px;
+    margin-bottom:8px;
+}
+
+.history-time{
+    color:#8f9aa7;
+    font-size:12px;
+    margin-bottom:5px;
+}
+
+.history-numbers{
+    color:#54dc91;
+    font-weight:bold;
+    line-height:1.6;
+}
+
+.empty{
+    text-align:center;
+    color:#89939e;
+    padding:15px 5px;
+    font-size:14px;
+}
+
+.footer{
+    text-align:center;
+    color:#68737f;
+    font-size:11px;
+    padding:10px 0 25px;
+}
+
+@media(max-width:480px){
+    .container{
+        padding:10px;
+    }
+
+    h1{
+        font-size:23px;
+    }
+
+    .number-btn{
+        padding:11px 2px;
+        font-size:14px;
+    }
+
+    .stat-grid{
+        grid-template-columns:1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🔢 12 × 24 Number Analyzer</h1>
+
+<div class="subtitle">
+Historical draw analyzer • Data is saved on this device
+</div>
+
+<div class="streak">
+    <div class="streak-title">CURRENT STREAK</div>
+    <div id="streakDisplay" class="streak-number">
+        No streak yet
+    </div>
+</div>
+
+<div class="card">
+
+<h2>🔢 Select 12 Numbers</h2>
+
+<div id="keypad" class="keypad"></div>
+
+<div class="selected-info">
+
+Selected:
+<span id="selectedCount">0/12</span>
+
+<div id="selectedNumbers" class="selected-numbers">
+None
+</div>
+
+</div>
+
+<button class="action" onclick="saveTapDraw()">
+💾 Save Draw
+</button>
+
+<button class="action secondary" onclick="resetSelection()">
+Reset Selection
+</button>
+
+<div id="tapMessage" class="message"></div>
+
+</div>
+
+<div class="card">
+
+<h2>📋 Paste Previous Draws</h2>
+
+<textarea id="pasteInput"
+placeholder="Example:
+
+2,4,5,6,8,10,12,17,18,21,22,23
+2,3,4,5,6,7,8,9,10,12,16,24
+
+You can also use spaces or semicolons."></textarea>
+
+<div class="help">
+One draw per line.<br>
+Each draw must contain exactly 12 unique numbers between 1 and 24.<br>
+Numbers can be separated by commas, spaces, semicolons or tabs.
+</div>
+
+<button class="action" onclick="savePastedDraws()">
+💾 Add Pasted Draws
+</button>
+
+<div id="pasteMessage" class="message"></div>
+
+</div>
+
+<div class="card">
+
+<h2>📊 Overall Frequency</h2>
+
+<div id="overallSummary" class="empty">
+No draws added yet.
+</div>
+
+<div class="graph-wrapper">
+<div id="overallChart" class="bar-chart"></div>
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>📈 Recent Frequency</h2>
+
+<div class="range-buttons">
+
+<button class="range-btn active"
+onclick="setRecentRange(5,this)">
+5
+</button>
+
+<button class="range-btn"
+onclick="setRecentRange(10,this)">
+10
+</button>
+
+<button class="range-btn"
+onclick="setRecentRange(20,this)">
+20
+</button>
+
+<button class="range-btn"
+onclick="setRecentRange(0,this)">
+All
+</button>
+
+</div>
+
+<div id="recentSummary" class="empty">
+No draws added yet.
+</div>
+
+<div class="graph-wrapper">
+<div id="recentChart" class="bar-chart"></div>
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>📋 Frequency Groups</h2>
+
+<div id="frequencyGroups">
+<div class="empty">
+No draws added yet.
+</div>
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>📊 Number Statistics</h2>
+
+<div id="numberStats">
+<div class="empty">
+No draws added yet.
+</div>
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>🟩 24-Number Draw Grid</h2>
+
+<div class="help">
+Green = number appeared in that draw.<br>
+Dark = number did not appear.
+</div>
+
+<div class="grid-scroll">
+<div id="drawGrid"></div>
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>📝 Draw History</h2>
+
+<div id="history">
+<div class="empty">
+No draws saved yet.
+</div>
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>🧹 Data Management</h2>
+
+<div class="help">
+All saved draws are stored in your browser on this device.
+</div>
+
+<button class="action danger" onclick="clearAllData()">
+🧹 Clear All Draws
+</button>
+
+</div>
+
+<div class="footer">
+12 × 24 Historical Number Analyzer
+</div>
+
+</div>
+
+<script>
+
+let records = [];
+let selectedNumbers = new Set();
+let recentRange = 5;
+
+const STORAGE_KEY = "condition1_number_history";
+
+
+function loadData(){
+
+    try{
+
+        const saved =
+            localStorage.getItem(STORAGE_KEY);
+
+        if(saved){
+
+            const parsed =
+                JSON.parse(saved);
+
+            if(Array.isArray(parsed)){
+                records = parsed;
+            }
+
+        }
+
+    }catch(error){
+
+        records = [];
+
+    }
+
+    renderAll();
+}
+
+
+function saveData(){
+
+    localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(records)
+    );
+
+}
+
+
+function addDraw(numbers){
+
+    records.push({
+        numbers:numbers,
+        time:new Date().toISOString()
+    });
+
+    saveData();
+    renderAll();
+
+}
+
+
+function createKeypad(){
+
+    const keypad =
+        document.getElementById("keypad");
+
+    keypad.innerHTML="";
+
+    for(let number=1;number<=24;number++){
+
+        const button =
+            document.createElement("button");
+
+        button.className="number-btn";
+        button.textContent=number;
+
+        button.onclick=function(){
+            toggleNumber(number,button);
+        };
+
+        keypad.appendChild(button);
+    }
+}
+
+
+function toggleNumber(number,button){
+
+    if(selectedNumbers.has(number)){
+
+        selectedNumbers.delete(number);
+        button.classList.remove("selected");
+
+    }else{
+
+        if(selectedNumbers.size>=12){
+
+            showTapMessage(
+                "You can select only 12 numbers.",
+                "error"
+            );
+
+            return;
+        }
+
+        selectedNumbers.add(number);
+        button.classList.add("selected");
+    }
+
+    updateSelectionDisplay();
+}
+
+
+function updateSelectionDisplay(){
+
+    document.getElementById("selectedCount")
+        .textContent =
+        selectedNumbers.size + "/12";
+
+    const numbers =
+        document.getElementById("selectedNumbers");
+
+    if(selectedNumbers.size===0){
+
+        numbers.textContent="None";
+
+    }else{
+
+        numbers.textContent =
+            [...selectedNumbers]
+            .sort((a,b)=>a-b)
+            .join(" · ");
+    }
+}
+
+
+function saveTapDraw(){
+
+    if(selectedNumbers.size!==12){
+
+        showTapMessage(
+            "Please select exactly 12 numbers.",
+            "error"
+        );
+
+        return;
+    }
+
+    const numbers =
+        [...selectedNumbers]
+        .sort((a,b)=>a-b);
+
+    addDraw(numbers);
+
+    resetSelection();
+
+    showTapMessage(
+        "Draw added successfully!",
+        "success"
+    );
+}
+
+
+function resetSelection(){
+
+    selectedNumbers.clear();
+
+    document
+        .querySelectorAll(".number-btn")
+        .forEach(button=>{
+            button.classList.remove("selected");
+        });
+
+    updateSelectionDisplay();
+}
+
+
+function showTapMessage(message,type){
+
+    const element =
+        document.getElementById("tapMessage");
+
+    element.textContent=message;
+    element.className="message "+type;
+}
+
+
+function parsePastedDraws(){
+
+    const input =
+        document.getElementById("pasteInput")
+        .value.trim();
+
+    if(!input){
+
+        return {
+            draws:[],
+            errors:["Please paste at least one draw."]
+        };
+    }
+
+    const lines =
+        input.split(/\r?\n/);
+
+    const draws=[];
+    const errors=[];
+
+    lines.forEach((line,index)=>{
+
+        const rowNumber=index+1;
+
+        if(!line.trim()) return;
+
+        const parts =
+            line.trim()
+            .split(/[\s,;]+/)
+            .filter(Boolean);
+
+        if(parts.length!==12){
+
+            errors.push(
+                "Row "+rowNumber+
+                ": must contain exactly 12 numbers."
+            );
+
+            return;
+        }
+
+        const numbers =
+            parts.map(value=>Number(value));
+
+        if(numbers.some(number=>
+            !Number.isInteger(number)
+        )){
+
+            errors.push(
+                "Row "+rowNumber+
+                ": all values must be integers."
+            );
+
+            return;
+        }
+
+        if(numbers.some(number=>
+            number<1 || number>24
+        )){
+
+            errors.push(
+                "Row "+rowNumber+
+                ": numbers must be between 1 and 24."
+            );
+
+            return;
+        }
+
+        if(new Set(numbers).size!==12){
+
+            errors.push(
+                "Row "+rowNumber+
+                ": duplicate numbers found."
+            );
+
+            return;
+        }
+
+        draws.push(
+            numbers.sort((a,b)=>a-b)
+        );
+
+    });
+
+    return {
+        draws:draws,
+        errors:errors
+    };
+}
+
+
+function savePastedDraws(){
+
+    const result =
+        parsePastedDraws();
+
+    const message =
+        document.getElementById("pasteMessage");
+
+    if(result.draws.length===0){
+
+        message.className="message error";
+
+        message.textContent =
+            result.errors.join(" ");
+
+        return;
+    }
+
+    result.draws.forEach(draw=>{
+
+        records.push({
+            numbers:draw,
+            time:new Date().toISOString()
+        });
+
+    });
+
+    saveData();
+    renderAll();
+
+    document.getElementById("pasteInput").value="";
+
+    if(result.errors.length>0){
+
+        message.className="message error";
+
+        message.textContent =
+            result.draws.length+
+            " draw(s) added. "+
+            result.errors.join(" ");
+
+    }else{
+
+        message.className="message success";
+
+        message.textContent =
+            result.draws.length+
+            " draw(s) added successfully!";
+    }
+}
+
+
+function getCounts(){
+
+    const counts =
+        Array(25).fill(0);
+
+    records.forEach(record=>{
+
+        record.numbers.forEach(number=>{
+
+            if(number>=1 && number<=24){
+                counts[number]++;
+            }
+
+        });
+
+    });
+
+    return counts;
+}
+
+
+function createBarChart(containerId,counts){
+
+    const container =
+        document.getElementById(containerId);
+
+    container.innerHTML="";
+
+    const max =
+        Math.max(...counts.slice(1),1);
+
+    for(let number=1;number<=24;number++){
+
+        const column =
+            document.createElement("div");
+
+        column.className="bar-column";
+
+        const value=counts[number];
+
+        const valueLabel =
+            document.createElement("div");
+
+        valueLabel.className="bar-value";
+        valueLabel.textContent=value;
+
+        const bar =
+            document.createElement("div");
+
+        bar.className="bar";
+
+        const height =
+            value===0
+            ? 2
+            : Math.max(4,(value/max)*190);
+
+        bar.style.height=height+"px";
+
+        const label =
+            document.createElement("div");
+
+        label.className="bar-label";
+        label.textContent=number;
+
+        column.appendChild(valueLabel);
+        column.appendChild(bar);
+        column.appendChild(label);
+
+        container.appendChild(column);
+    }
+}
+
+
+function renderOverallFrequency(){
+
+    const summary =
+        document.getElementById("overallSummary");
+
+    if(records.length===0){
+
+        summary.textContent="No draws added yet.";
+
+        document.getElementById(
+            "overallChart"
+        ).innerHTML="";
+
+        return;
+    }
+
+    const counts=getCounts();
+
+    summary.innerHTML =
+        "<b>Total draws analyzed:</b> "+
+        records.length+
+        "<br><b>Total numbers recorded:</b> "+
+        records.length*12;
+
+    createBarChart(
+        "overallChart",
+        counts
+    );
+}
+
+
+function setRecentRange(amount,button){
+
+    recentRange=amount;
+
+    document
+        .querySelectorAll(".range-btn")
+        .forEach(btn=>{
+            btn.classList.remove("active");
+        });
+
+    button.classList.add("active");
+
+    renderRecentFrequency();
+}
+
+
+function renderRecentFrequency(){
+
+    const summary =
+        document.getElementById("recentSummary");
+
+    if(records.length===0){
+
+        summary.textContent="No draws added yet.";
+
+        document.getElementById(
+            "recentChart"
+        ).innerHTML="";
+
+        return;
+    }
+
+    const amount =
+        recentRange===0
+        ? records.length
+        : Math.min(recentRange,records.length);
+
+    const recent =
+        records.slice(-amount);
+
+    const counts =
+        Array(25).fill(0);
+
+    recent.forEach(record=>{
+
+        record.numbers.forEach(number=>{
+            counts[number]++;
+        });
+
+    });
+
+    summary.innerHTML =
+        "<b>Draws analyzed:</b> "+
+        amount;
+
+    createBarChart(
+        "recentChart",
+        counts
+    );
+}
+
+
+function renderFrequencyGroups(){
+
+    const container =
+        document.getElementById("frequencyGroups");
+
+    if(records.length===0){
+
+        container.innerHTML =
+            '<div class="empty">No draws added yet.</div>';
+
+        return;
+    }
+
+    const counts=getCounts();
+
+    const groups={};
+
+    for(let number=1;number<=24;number++){
+
+        const count=counts[number];
+
+        if(!groups[count]){
+            groups[count]=[];
+        }
+
+        groups[count].push(number);
+    }
+
+    const sortedCounts =
+        Object.keys(groups)
+        .map(Number)
+        .sort((a,b)=>b-a);
+
+    container.innerHTML="";
+
+    sortedCounts.forEach(count=>{
+
+        const group =
+            document.createElement("div");
+
+        group.className="group";
+
+        const title =
+            document.createElement("div");
+
+        title.className="group-title";
+
+        title.textContent =
+            count+"/"+records.length;
+
+        const numbers =
+            document.createElement("div");
+
+        numbers.className="group-numbers";
+
+        numbers.textContent =
+            groups[count].join(" · ");
+
+        group.appendChild(title);
+        group.appendChild(numbers);
+
+        container.appendChild(group);
+    });
+}
+
+
+function makeStatBox(label,value){
+
+    const box =
+        document.createElement("div");
+
+    box.className="stat-box";
+
+    const title =
+        document.createElement("div");
+
+    title.className="stat-label";
+    title.textContent=label;
+
+    const result =
+        document.createElement("div");
+
+    result.className="stat-value";
+    result.textContent=value;
+
+    box.appendChild(title);
+    box.appendChild(result);
+
+    return box;
+}
+
+
+function renderNumberStats(){
+
+    const container =
+        document.getElementById("numberStats");
+
+    if(records.length===0){
+
+        container.innerHTML =
+            '<div class="empty">No draws added yet.</div>';
+
+        return;
+    }
+
+    const counts=getCounts();
+
+    const max =
+        Math.max(...counts.slice(1));
+
+    const min =
+        Math.min(...counts.slice(1));
+
+    const mostFrequent=[];
+    const leastFrequent=[];
+    const neverDrawn=[];
+
+    for(let number=1;number<=24;number++){
+
+        if(counts[number]===max){
+            mostFrequent.push(number);
+        }
+
+        if(counts[number]===min){
+            leastFrequent.push(number);
+        }
+
+        if(counts[number]===0){
+            neverDrawn.push(number);
+        }
+    }
+
+    const stats =
+        document.createElement("div");
+
+    stats.className="stat-grid";
+
+    stats.appendChild(
+        makeStatBox(
+            "Most frequent",
+            max+"/"+records.length+
+            " → "+mostFrequent.join(" · ")
+        )
+    );
+
+    stats.appendChild(
+        makeStatBox(
+            "Least frequent",
+            min+"/"+records.length+
+            " → "+leastFrequent.join(" · ")
+        )
+    );
+
+    stats.appendChild(
+        makeStatBox(
+            "Never drawn",
+            neverDrawn.length
+            ? neverDrawn.join(" · ")
+            : "None"
+        )
+    );
+
+    stats.appendChild(
+        makeStatBox(
+            "Average appearances",
+            (records.length*12/24).toFixed(2)+
+            " per number"
+        )
+    );
+
+    container.innerHTML="";
+    container.appendChild(stats);
+}
+
+
+function renderDrawGrid(){
+
+    const container =
+        document.getElementById("drawGrid");
+
+    if(records.length===0){
+
+        container.innerHTML =
+            '<div class="empty">No draws added yet.</div>';
+
+        return;
+    }
+
+    let html="<table class='draw-grid'>";
+
+    html+="<thead><tr>";
+    html+="<th>Draw</th>";
+
+    for(let number=1;number<=24;number++){
+        html+="<th>"+number+"</th>";
+    }
+
+    html+="</tr></thead><tbody>";
+
+    const reversed=[...records].reverse();
+
+    reversed.forEach((record,index)=>{
+
+        const set=new Set(record.numbers);
+
+        html+="<tr>";
+        html+="<td>"+(index+1)+"</td>";
+
+        for(let number=1;number<=24;number++){
+
+            html+=set.has(number)
+                ? "<td class='draw-cell drawn'>✓</td>"
+                : "<td class='draw-cell'>·</td>";
+        }
+
+        html+="</tr>";
+    });
+
+    html+="</tbody></table>";
+
+    container.innerHTML=html;
+}
+
+
+function formatTime(iso){
+
+    const date=new Date(iso);
+
+    return date.toLocaleString(
+        undefined,
+        {
+            year:"numeric",
+            month:"short",
+            day:"numeric",
+            hour:"2-digit",
+            minute:"2-digit",
+            second:"2-digit"
+        }
+    );
+}
+
+
+function renderHistory(){
+
+    const container =
+        document.getElementById("history");
+
+    if(records.length===0){
+
+        container.innerHTML =
+            '<div class="empty">No draws saved yet.</div>';
+
+        return;
+    }
+
+    container.innerHTML="";
+
+    [...records].reverse().forEach(record=>{
+
+        const item =
+            document.createElement("div");
+
+        item.className="history-item";
+
+        const time =
+            document.createElement("div");
+
+        time.className="history-time";
+
+        time.textContent=formatTime(record.time);
+
+        const numbers =
+            document.createElement("div");
+
+        numbers.className="history-numbers";
+
+        numbers.textContent =
+            record.numbers.join(" · ");
+
+        item.appendChild(time);
+        item.appendChild(numbers);
+
+        container.appendChild(item);
+    });
+}
+
+
+function renderStreak(){
+
+    const display =
+        document.getElementById("streakDisplay");
+
+    if(records.length<2){
+
+        display.textContent="No streak yet";
+
+        return;
+    }
+
+    const newest =
+        records[records.length-1].numbers;
+
+    let bestNumber=null;
+    let bestStreak=1;
+
+    newest.forEach(number=>{
+
+        let streak=1;
+
+        for(
+            let index=records.length-2;
+            index>=0;
+            index--
+        ){
+
+            if(records[index].numbers.includes(number)){
+
+                streak++;
+
+            }else{
+
+                break;
+            }
+        }
+
+        if(streak>bestStreak){
+
+            bestStreak=streak;
+            bestNumber=number;
+        }
+    });
+
+    if(bestStreak<2){
+
+        display.textContent="No current streak";
+
+        return;
+    }
+
+    display.textContent =
+        bestNumber+
+        " → 🔥 STREAK ×"+
+        bestStreak;
+}
+
+
+function clearAllData(){
+
+    if(records.length===0){
+
+        alert("There are no saved draws.");
+        return;
+    }
+
+    if(!confirm(
+        "Are you sure you want to delete ALL saved draws?"
+    )){
+        return;
+    }
+
+    records=[];
+
+    localStorage.removeItem(STORAGE_KEY);
+
+    resetSelection();
+
+    renderAll();
+
+    const message =
+        document.getElementById("tapMessage");
+
+    message.textContent="All draws cleared.";
+    message.className="message success";
+}
+
+
+function renderAll(){
+
+    renderOverallFrequency();
+    renderRecentFrequency();
+    renderFrequencyGroups();
+    renderNumberStats();
+    renderDrawGrid();
+    renderHistory();
+    renderStreak();
+}
+
+
+createKeypad();
+loadData();
+updateSelectionDisplay();
+
+</script>
+
+</body>
+</html>
