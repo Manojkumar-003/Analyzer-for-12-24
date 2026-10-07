@@ -6,44 +6,55 @@
 <title>12×24 Analyzer</title>
 
 <style>
-*{
-  box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
   margin:0;
-  font-family:Arial,sans-serif;
   background:#101214;
-  color:#f1f1f1;
+  color:#f4f4f4;
+  font-family:Arial,sans-serif;
+  padding-bottom:78px;
 }
 
 .container{
-  max-width:900px;
+  max-width:650px;
   margin:auto;
   padding:15px;
 }
 
-h1{
+header{
   text-align:center;
-  margin:10px 0 5px;
+  padding:10px 0 18px;
 }
 
-.subtitle{
-  text-align:center;
-  color:#999;
-  margin-bottom:20px;
+header h1{
+  margin:0;
+  font-size:28px;
 }
 
-.section{
+header p{
+  margin:5px 0 0;
+  color:#888;
+}
+
+.page{
+  display:none;
+}
+
+.page.active{
+  display:block;
+}
+
+.card{
   background:#191c20;
-  border-radius:14px;
-  padding:16px;
-  margin-bottom:15px;
   border:1px solid #292d32;
+  border-radius:16px;
+  padding:16px;
+  margin-bottom:14px;
 }
 
-.section-title{
-  font-size:20px;
+.title{
+  font-size:21px;
   font-weight:bold;
   margin-bottom:14px;
 }
@@ -53,62 +64,73 @@ h1{
 }
 
 button{
-  border:none;
+  border:0;
   border-radius:10px;
   padding:12px 15px;
-  font-size:15px;
   font-weight:bold;
-  cursor:pointer;
+  font-size:15px;
+  color:white;
+  background:#292e34;
 }
 
-.primary{
+button:active{
+  transform:scale(.97);
+}
+
+.green{
   background:#24c77a;
   color:#06140d;
 }
 
-.danger{
+.red{
   background:#d84b4b;
-  color:white;
-}
-
-.secondary{
-  background:#292e34;
-  color:white;
 }
 
 .message{
+  display:none;
   margin-top:10px;
   padding:10px;
-  border-radius:8px;
-  display:none;
+  border-radius:9px;
+}
+
+.message.show{
+  display:block;
 }
 
 .message.success{
-  display:block;
   background:#123c28;
   color:#5ff09f;
 }
 
 .message.error{
-  display:block;
   background:#421c1c;
   color:#ff8585;
 }
 
-/* KEYPAD */
+
+/* INPUT */
+
+.selected-info{
+  color:#aaa;
+  margin-bottom:8px;
+}
+
+.selected-numbers{
+  color:#5ff09f;
+  font-weight:bold;
+  min-height:22px;
+  margin-bottom:14px;
+}
 
 .keypad{
   display:grid;
   grid-template-columns:repeat(6,1fr);
-  gap:8px;
+  gap:7px;
 }
 
 .key{
+  padding:14px 3px;
   background:#252a30;
-  color:white;
-  padding:14px 5px;
-  border-radius:10px;
-  font-size:16px;
 }
 
 .key.selected{
@@ -116,74 +138,57 @@ button{
   color:#06140d;
 }
 
-.selected-info{
-  margin:12px 0;
-  color:#aaa;
+.actions{
+  display:flex;
+  gap:8px;
+  margin-top:12px;
 }
 
-.selected-numbers{
-  color:#5ff09f;
-  font-weight:bold;
+.actions button{
+  flex:1;
 }
-
-/* PASTE */
 
 textarea{
   width:100%;
-  min-height:120px;
-  resize:vertical;
-  background:#0f1113;
+  min-height:130px;
+  background:#0d0f11;
   color:white;
   border:1px solid #343940;
   border-radius:10px;
   padding:12px;
   font-size:15px;
-  outline:none;
+  resize:vertical;
 }
 
-textarea:focus{
-  border-color:#24c77a;
-}
 
-.button-row{
+/* RANGE */
+
+.range-buttons{
   display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-  margin-top:10px;
+  gap:6px;
+  margin-bottom:15px;
 }
 
-/* STREAK */
-
-.streak-row{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  background:#20252a;
-  padding:12px;
-  margin-bottom:8px;
-  border-radius:10px;
+.range-buttons button{
+  flex:1;
+  padding:10px 4px;
 }
 
-.streak-count{
-  color:#ff7b32;
-  font-size:18px;
-  min-width:45px;
+.range-buttons .active{
+  background:#24c77a;
+  color:#06140d;
 }
 
-.streak-numbers{
-  color:#fff;
-  font-weight:bold;
-}
 
-/* FREQUENCY */
+/* GRAPH */
 
 .chart{
+  height:280px;
   display:flex;
   align-items:flex-end;
-  gap:5px;
-  height:220px;
-  padding:10px 5px;
+  gap:4px;
   overflow-x:auto;
+  padding:5px 3px 0;
   border-bottom:1px solid #444;
 }
 
@@ -196,32 +201,41 @@ textarea:focus{
   align-items:center;
 }
 
-.bar{
-  width:22px;
-  background:#24c77a;
-  border-radius:5px 5px 0 0;
-  min-height:2px;
+.streak{
+  height:25px;
+  font-size:10px;
+  color:#ff8235;
+  font-weight:bold;
+  white-space:nowrap;
 }
 
-.bar-label{
-  font-size:11px;
-  margin-top:5px;
-  color:#aaa;
-}
-
-.bar-value{
+.bar-count{
+  height:18px;
   font-size:10px;
   color:#ddd;
-  margin-bottom:3px;
 }
+
+.bar{
+  width:21px;
+  min-height:2px;
+  background:#24c77a;
+  border-radius:5px 5px 0 0;
+}
+
+.bar-number{
+  font-size:10px;
+  color:#aaa;
+  margin-top:5px;
+}
+
 
 /* GROUPS */
 
 .group{
-  padding:12px;
-  margin-bottom:8px;
   background:#20252a;
   border-radius:10px;
+  padding:12px;
+  margin-bottom:8px;
 }
 
 .group-title{
@@ -231,12 +245,13 @@ textarea:focus{
 }
 
 .group-numbers{
-  line-height:1.8;
+  line-height:1.7;
 }
+
 
 /* STATS */
 
-.stat-grid{
+.stats-grid{
   display:grid;
   grid-template-columns:repeat(2,1fr);
   gap:8px;
@@ -244,90 +259,34 @@ textarea:focus{
 
 .stat{
   background:#20252a;
-  padding:12px;
   border-radius:10px;
+  padding:11px;
 }
 
-.stat-title{
+.stat-name{
   color:#999;
   font-size:13px;
 }
 
-.stat-value{
+.stat-main{
+  font-weight:bold;
   font-size:17px;
-  font-weight:bold;
-  margin-top:5px;
+  margin-top:4px;
 }
 
-/* RECENT BUTTONS */
-
-.range-buttons{
-  display:flex;
-  gap:7px;
-  flex-wrap:wrap;
-  margin-bottom:12px;
-}
-
-.range-btn{
-  background:#292e34;
-  color:white;
-}
-
-.range-btn.active{
-  background:#24c77a;
-  color:#06140d;
-}
-
-/* DRAW GRID */
-
-.draw-grid{
-  overflow-x:auto;
-}
-
-.grid{
-  min-width:700px;
-}
-
-.grid-row{
-  display:grid;
-  grid-template-columns:80px repeat(24,1fr);
-  gap:2px;
-  margin-bottom:3px;
-}
-
-.grid-cell{
-  height:27px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:#24282d;
-  font-size:11px;
-  border-radius:3px;
-}
-
-.grid-cell.drawn{
-  background:#24c77a;
-  color:#06140d;
-  font-weight:bold;
-}
-
-.grid-header .grid-cell{
-  background:#343a40;
-  color:#aaa;
-}
 
 /* HISTORY */
 
 .history-item{
   background:#20252a;
-  padding:12px;
   border-radius:10px;
+  padding:12px;
   margin-bottom:8px;
 }
 
 .history-time{
   color:#999;
-  font-size:13px;
+  font-size:12px;
   margin-bottom:7px;
 }
 
@@ -337,23 +296,98 @@ textarea:focus{
   line-height:1.7;
 }
 
-/* RESPONSIVE */
 
-@media(max-width:500px){
+/* DRAW GRID */
+
+.grid-scroll{
+  overflow-x:auto;
+}
+
+.draw-grid{
+  min-width:600px;
+}
+
+.grid-row{
+  display:grid;
+  grid-template-columns:45px repeat(24,1fr);
+  gap:2px;
+  margin-bottom:2px;
+}
+
+.grid-cell{
+  height:25px;
+  background:#252a30;
+  border-radius:3px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:9px;
+}
+
+.grid-cell.drawn{
+  background:#24c77a;
+  color:#06140d;
+  font-weight:bold;
+}
+
+
+/* BOTTOM NAV */
+
+.bottom-nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  height:68px;
+  background:#181b1f;
+  border-top:1px solid #30343a;
+  display:flex;
+  z-index:100;
+  max-width:650px;
+  margin:auto;
+}
+
+.nav-btn{
+  flex:1;
+  background:transparent;
+  color:#777;
+  border-radius:0;
+  padding:7px 2px;
+  font-size:11px;
+}
+
+.nav-icon{
+  display:block;
+  font-size:21px;
+  margin-bottom:3px;
+}
+
+.nav-btn.active{
+  color:#24c77a;
+}
+
+
+/* DESKTOP */
+
+@media(min-width:700px){
+  .bottom-nav{
+    border-radius:14px 14px 0 0;
+    left:50%;
+    transform:translateX(-50%);
+  }
+}
+
+@media(max-width:380px){
   .keypad{
-    gap:6px;
+    gap:5px;
   }
 
   .key{
-    padding:12px 3px;
+    padding:12px 2px;
   }
 
-  .stat-grid{
+  .stats-grid{
     grid-template-columns:1fr;
-  }
-
-  h1{
-    font-size:25px;
   }
 }
 </style>
@@ -363,207 +397,330 @@ textarea:focus{
 
 <div class="container">
 
-<h1>12×24 Analyzer</h1>
-<div class="subtitle">Historical draw statistics</div>
+<header>
+  <h1>12×24 Analyzer</h1>
+  <p>Historical draw statistics</p>
+</header>
 
 
-<!-- CURRENT STREAK -->
+<!-- ================= INPUT ================= -->
 
-<div class="section" id="streakBox">
-  <div class="section-title">🔥 Current Streak</div>
-  <div class="muted">No draws yet.</div>
-</div>
+<div id="inputPage" class="page active">
 
+  <div class="card">
 
-<!-- NUMBER INPUT -->
+    <div class="title">🔢 Number Input</div>
 
-<div class="section">
+    <div class="selected-info">
+      Selected <b id="selectedCount">0</b>/12
+    </div>
 
-  <div class="section-title">🔢 Number Input</div>
+    <div id="selectedNumbers" class="selected-numbers">
+      None
+    </div>
 
-  <div class="selected-info">
-    Selected <span id="selectedCount">0</span>/12
+    <div id="keypad" class="keypad"></div>
+
+    <div class="actions">
+      <button class="green" onclick="saveTapDraw()">
+        💾 Save Draw
+      </button>
+
+      <button onclick="resetSelection()">
+        Reset
+      </button>
+    </div>
+
+    <div id="tapMessage" class="message"></div>
+
   </div>
 
-  <div class="selected-numbers" id="selectedNumbers">
-    None
-  </div>
 
-  <br>
+  <div class="card">
 
-  <div class="keypad" id="keypad"></div>
+    <div class="title">📋 Paste Draws</div>
 
-  <div class="button-row">
-    <button class="primary" onclick="saveTapDraw()">💾 Save Draw</button>
-    <button class="secondary" onclick="resetSelection()">Reset</button>
-  </div>
+    <div class="muted">
+      One draw per line. Exactly 12 unique numbers from 1–24.
+    </div>
 
-  <div id="tapMessage" class="message"></div>
+    <br>
 
-</div>
-
-
-<!-- PASTE INPUT -->
-
-<div class="section">
-
-  <div class="section-title">📋 Paste Draws</div>
-
-  <div class="muted">
-    One draw per line. Each draw must contain exactly 12 unique numbers from 1–24.
-  </div>
-
-  <br>
-
-  <textarea
-    id="pasteInput"
-    placeholder="Example:
+    <textarea
+      id="pasteInput"
+      placeholder="Example:
 1,2,3,4,5,6,7,8,9,10,11,12
 2,4,6,8,10,12,14,16,18,20,22,24">
-  </textarea>
+    </textarea>
 
-  <div class="button-row">
-    <button class="primary" onclick="savePastedDraws()">💾 Save Pasted Draws</button>
-    <button class="secondary" onclick="document.getElementById('pasteInput').value=''">
-      Clear Text
+    <div class="actions">
+
+      <button class="green" onclick="savePastedDraws()">
+        💾 Save
+      </button>
+
+      <button onclick="clearPaste()">
+        Clear
+      </button>
+
+    </div>
+
+    <div id="pasteMessage" class="message"></div>
+
+  </div>
+
+</div>
+
+
+<!-- ================= RECENT ================= -->
+
+<div id="recentPage" class="page">
+
+  <div class="card">
+
+    <div class="title">
+      📊 Recent Frequency
+    </div>
+
+    <div class="range-buttons">
+
+      <button class="active"
+        onclick="setRecentRange(5,this)">
+        5
+      </button>
+
+      <button
+        onclick="setRecentRange(10,this)">
+        10
+      </button>
+
+      <button
+        onclick="setRecentRange(20,this)">
+        20
+      </button>
+
+      <button
+        onclick="setRecentRange(0,this)">
+        All
+      </button>
+
+    </div>
+
+    <div id="recentInfo" class="muted"></div>
+
+    <br>
+
+    <div id="recentChart" class="chart"></div>
+
+  </div>
+
+
+  <div class="card">
+
+    <div class="title">
+      🔥 Streak Groups
+    </div>
+
+    <div id="streakGroups">
+      <div class="muted">No draws yet.</div>
+    </div>
+
+  </div>
+
+
+  <div class="card">
+
+    <div class="title">
+      📈 Frequency Groups
+    </div>
+
+    <div id="recentGroups"></div>
+
+  </div>
+
+</div>
+
+
+<!-- ================= STATS ================= -->
+
+<div id="statsPage" class="page">
+
+  <div class="card">
+
+    <div class="title">
+      📈 Frequency Groups
+    </div>
+
+    <div id="frequencyGroups">
+      <div class="muted">No draws yet.</div>
+    </div>
+
+  </div>
+
+
+  <div class="card">
+
+    <div class="title">
+      📋 Number Statistics
+    </div>
+
+    <div id="numberStats">
+      <div class="muted">No draws yet.</div>
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- ================= HISTORY ================= -->
+
+<div id="historyPage" class="page">
+
+  <div class="card">
+
+    <div class="title">
+      📝 Draw History
+    </div>
+
+    <div id="history">
+      <div class="muted">No draws yet.</div>
+    </div>
+
+  </div>
+
+
+  <div class="card">
+
+    <div class="title">
+      🟩 24-Number Draw Grid
+    </div>
+
+    <div class="grid-scroll">
+      <div id="drawGrid" class="draw-grid"></div>
+    </div>
+
+  </div>
+
+
+  <div class="card">
+
+    <button class="red" onclick="clearAll()">
+      🧹 Clear All Draws
     </button>
-  </div>
 
-  <div id="pasteMessage" class="message"></div>
-
-</div>
-
-
-<!-- OVERALL FREQUENCY -->
-
-<div class="section">
-
-  <div class="section-title">📊 Overall Frequency</div>
-
-  <div id="overallInfo" class="muted"></div>
-
-  <div id="overallChart" class="chart"></div>
-
-</div>
-
-
-<!-- FREQUENCY GROUPS -->
-
-<div class="section">
-
-  <div class="section-title">📈 Frequency Groups</div>
-
-  <div id="frequencyGroups">
-    <div class="muted">No draws yet.</div>
   </div>
 
 </div>
 
 
-<!-- NUMBER STATISTICS -->
-
-<div class="section">
-
-  <div class="section-title">📋 Number Statistics</div>
-
-  <div id="numberStats">
-    <div class="muted">No draws yet.</div>
-  </div>
-
 </div>
 
 
-<!-- RECENT FREQUENCY -->
+<!-- ================= BOTTOM NAV ================= -->
 
-<div class="section">
+<div class="bottom-nav">
 
-  <div class="section-title">📉 Recent Frequency</div>
-
-  <div class="range-buttons">
-    <button class="range-btn active" onclick="setRecentRange(5,this)">Last 5</button>
-    <button class="range-btn" onclick="setRecentRange(10,this)">Last 10</button>
-    <button class="range-btn" onclick="setRecentRange(20,this)">Last 20</button>
-    <button class="range-btn" onclick="setRecentRange(0,this)">All</button>
-  </div>
-
-  <div id="recentInfo" class="muted"></div>
-
-  <div id="recentChart" class="chart"></div>
-
-  <div id="recentGroups"></div>
-
-</div>
-
-
-<!-- 24 NUMBER GRID -->
-
-<div class="section">
-
-  <div class="section-title">🟩 24-Number Draw Grid</div>
-
-  <div class="draw-grid">
-    <div id="drawGrid" class="grid"></div>
-  </div>
-
-</div>
-
-
-<!-- HISTORY -->
-
-<div class="section">
-
-  <div class="section-title">📝 Draw History</div>
-
-  <div id="history">
-    <div class="muted">No draws yet.</div>
-  </div>
-
-</div>
-
-
-<!-- CLEAR -->
-
-<div class="section">
-
-  <button class="danger" onclick="clearAll()">
-    🧹 Clear All Draws
+  <button
+    class="nav-btn active"
+    onclick="showPage('inputPage',this)">
+    <span class="nav-icon">🏠</span>
+    Input
   </button>
 
-</div>
+  <button
+    class="nav-btn"
+    onclick="showPage('recentPage',this)">
+    <span class="nav-icon">📊</span>
+    Recent
+  </button>
+
+  <button
+    class="nav-btn"
+    onclick="showPage('statsPage',this)">
+    <span class="nav-icon">📈</span>
+    Stats
+  </button>
+
+  <button
+    class="nav-btn"
+    onclick="showPage('historyPage',this)">
+    <span class="nav-icon">📋</span>
+    History
+  </button>
 
 </div>
 
 
 <script>
 
-const STORAGE_KEY = "condition1_number_history";
+const STORAGE_KEY =
+"condition1_number_history";
 
 let records = [];
-let selectedNumbers = new Set();
+
+let selectedNumbers =
+new Set();
+
 let recentRange = 5;
 
 
 /* =========================
-   LOAD DATA
+   NAVIGATION
+========================= */
+
+function showPage(pageId,button){
+
+document
+.querySelectorAll(".page")
+.forEach(page=>{
+page.classList.remove("active");
+});
+
+document
+.getElementById(pageId)
+.classList.add("active");
+
+
+document
+.querySelectorAll(".nav-btn")
+.forEach(btn=>{
+btn.classList.remove("active");
+});
+
+button.classList.add("active");
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
+}
+
+
+/* =========================
+   LOAD
 ========================= */
 
 function loadData(){
 
-  try{
+try{
 
-    const saved = localStorage.getItem(STORAGE_KEY);
+const saved =
+localStorage.getItem(STORAGE_KEY);
 
-    if(saved){
-      records = JSON.parse(saved);
-    }
+if(saved){
+records=JSON.parse(saved);
+}
 
-  }catch(error){
+}catch(e){
 
-    records = [];
+records=[];
 
-  }
+}
 
-  renderAll();
+renderAll();
+
 }
 
 
@@ -573,111 +730,127 @@ function loadData(){
 
 function createKeypad(){
 
-  const keypad = document.getElementById("keypad");
+const keypad =
+document.getElementById("keypad");
 
-  keypad.innerHTML = "";
+keypad.innerHTML="";
 
-  for(let number = 1; number <= 24; number++){
+for(let n=1;n<=24;n++){
 
-    const button = document.createElement("button");
+const btn =
+document.createElement("button");
 
-    button.className = "key";
-    button.textContent = number;
+btn.className="key";
 
-    button.onclick = function(){
+btn.textContent=n;
 
-      toggleNumber(number, button);
+btn.onclick=()=>{
+toggleNumber(n,btn);
+};
 
-    };
+keypad.appendChild(btn);
 
-    keypad.appendChild(button);
-
-  }
+}
 
 }
 
 
-function toggleNumber(number, button){
+function toggleNumber(n,button){
 
-  if(selectedNumbers.has(number)){
+if(selectedNumbers.has(n)){
 
-    selectedNumbers.delete(number);
-    button.classList.remove("selected");
+selectedNumbers.delete(n);
 
-  }else{
+button.classList.remove("selected");
 
-    if(selectedNumbers.size >= 12){
+}else{
 
-      showTapMessage(
-        "You can select only 12 numbers.",
-        "error"
-      );
+if(selectedNumbers.size>=12){
 
-      return;
+showMessage(
+"tapMessage",
+"You can select only 12 numbers.",
+"error"
+);
 
-    }
+return;
 
-    selectedNumbers.add(number);
-    button.classList.add("selected");
+}
 
-  }
+selectedNumbers.add(n);
 
-  updateSelectionInfo();
+button.classList.add("selected");
+
+}
+
+updateSelection();
 
 }
 
 
-function updateSelectionInfo(){
+function updateSelection(){
 
-  document.getElementById("selectedCount").textContent =
-    selectedNumbers.size;
+document.getElementById(
+"selectedCount"
+).textContent=
+selectedNumbers.size;
 
-  const numbers = [...selectedNumbers]
-    .sort((a,b)=>a-b);
+const nums=
+[...selectedNumbers]
+.sort((a,b)=>a-b);
 
-  document.getElementById("selectedNumbers").textContent =
-    numbers.length ? numbers.join(" · ") : "None";
+document.getElementById(
+"selectedNumbers"
+).textContent=
+nums.length
+?nums.join(" · ")
+:"None";
 
 }
 
 
 function resetSelection(){
 
-  selectedNumbers.clear();
+selectedNumbers.clear();
 
-  document.querySelectorAll(".key").forEach(button=>{
-    button.classList.remove("selected");
-  });
+document
+.querySelectorAll(".key")
+.forEach(btn=>{
+btn.classList.remove("selected");
+});
 
-  updateSelectionInfo();
+updateSelection();
 
 }
 
 
 function saveTapDraw(){
 
-  if(selectedNumbers.size !== 12){
+if(selectedNumbers.size!==12){
 
-    showTapMessage(
-      "Please select exactly 12 numbers.",
-      "error"
-    );
+showMessage(
+"tapMessage",
+"Please select exactly 12 numbers.",
+"error"
+);
 
-    return;
+return;
 
-  }
+}
 
-  const numbers = [...selectedNumbers]
-    .sort((a,b)=>a-b);
+const numbers=
+[...selectedNumbers]
+.sort((a,b)=>a-b);
 
-  addDraw(numbers);
+addDraw(numbers);
 
-  resetSelection();
+resetSelection();
 
-  showTapMessage(
-    "Draw added successfully!",
-    "success"
-  );
+showMessage(
+"tapMessage",
+"Draw added successfully!",
+"success"
+);
 
 }
 
@@ -686,22 +859,15 @@ function saveTapDraw(){
    MESSAGES
 ========================= */
 
-function showTapMessage(text,type){
+function showMessage(id,text,type){
 
-  const box = document.getElementById("tapMessage");
+const box=
+document.getElementById(id);
 
-  box.textContent = text;
-  box.className = "message " + type;
+box.textContent=text;
 
-}
-
-
-function showPasteMessage(text,type){
-
-  const box = document.getElementById("pasteMessage");
-
-  box.textContent = text;
-  box.className = "message " + type;
+box.className=
+"message show "+type;
 
 }
 
@@ -712,141 +878,159 @@ function showPasteMessage(text,type){
 
 function addDraw(numbers){
 
-  records.push({
+records.push({
 
-    numbers:numbers,
+numbers:numbers,
 
-    time:new Date().toISOString()
+time:new Date().toISOString()
 
-  });
+});
 
-  localStorage.setItem(
-    STORAGE_KEY,
-    JSON.stringify(records)
-  );
+localStorage.setItem(
+STORAGE_KEY,
+JSON.stringify(records)
+);
 
-  renderAll();
+renderAll();
 
 }
 
 
 /* =========================
-   PASTE PARSER
+   PASTE
 ========================= */
+
+function clearPaste(){
+
+document.getElementById(
+"pasteInput"
+).value="";
+
+}
+
 
 function parsePastedDraws(){
 
-  const text =
-    document.getElementById("pasteInput").value.trim();
+const text=
+document.getElementById(
+"pasteInput"
+).value.trim();
 
-  if(!text){
+if(!text){
 
-    return {
-      draws:[],
-      errors:["Please paste at least one draw."]
-    };
+return {
+draws:[],
+errors:["Please paste a draw."]
+};
 
-  }
+}
 
-  const lines = text.split(/\r?\n/);
+const lines=
+text.split(/\r?\n/);
 
-  const draws = [];
-  const errors = [];
+const draws=[];
+const errors=[];
 
-  lines.forEach((line,index)=>{
+lines.forEach((line,index)=>{
 
-    if(!line.trim()) return;
+if(!line.trim()) return;
 
-    const values = line
-      .trim()
-      .split(/[\s,;]+/)
-      .map(Number);
+const values=
+line.trim()
+.split(/[\s,;]+/)
+.map(Number);
 
-    if(values.length !== 12){
+if(values.length!==12){
 
-      errors.push(
-        `Row ${index+1}: needs exactly 12 numbers.`
-      );
+errors.push(
+`Row ${index+1}: needs exactly 12 numbers.`
+);
 
-      return;
+return;
 
-    }
+}
 
-    if(values.some(number =>
-      !Number.isInteger(number) ||
-      number < 1 ||
-      number > 24
-    )){
+if(values.some(n=>
+!Number.isInteger(n) ||
+n<1 ||
+n>24
+)){
 
-      errors.push(
-        `Row ${index+1}: numbers must be integers from 1–24.`
-      );
+errors.push(
+`Row ${index+1}: numbers must be 1–24.`
+);
 
-      return;
+return;
 
-    }
+}
 
-    const unique = new Set(values);
+if(new Set(values).size!==12){
 
-    if(unique.size !== 12){
+errors.push(
+`Row ${index+1}: duplicate numbers.`
+);
 
-      errors.push(
-        `Row ${index+1}: duplicate numbers found.`
-      );
+return;
 
-      return;
+}
 
-    }
+draws.push(
+[...new Set(values)]
+.sort((a,b)=>a-b)
+);
 
-    draws.push(
-      [...unique].sort((a,b)=>a-b)
-    );
+});
 
-  });
-
-  return {
-    draws,
-    errors
-  };
+return {draws,errors};
 
 }
 
 
 function savePastedDraws(){
 
-  const result = parsePastedDraws();
+const result=
+parsePastedDraws();
 
-  if(result.errors.length){
+if(result.errors.length){
 
-    showPasteMessage(
-      result.errors.join(" "),
-      "error"
-    );
+showMessage(
+"pasteMessage",
+result.errors.join(" "),
+"error"
+);
 
-    return;
+return;
 
-  }
+}
 
-  result.draws.forEach(draw=>{
-    records.push({
-      numbers:draw,
-      time:new Date().toISOString()
-    });
-  });
+result.draws.forEach(draw=>{
 
-  localStorage.setItem(
-    STORAGE_KEY,
-    JSON.stringify(records)
-  );
+records.push({
 
-  document.getElementById("pasteInput").value = "";
+numbers:draw,
 
-  renderAll();
+time:new Date().toISOString()
 
-  showPasteMessage(
-    `${result.draws.length} draw(s) added successfully!`,
-    "success"
-  );
+});
+
+});
+
+localStorage.setItem(
+STORAGE_KEY,
+JSON.stringify(records)
+);
+
+document.getElementById(
+"pasteInput"
+).value="";
+
+renderAll();
+
+showMessage(
+"pasteMessage",
+`${result.draws.length} draw(s) added successfully!`,
+"success"
+);
 
 }
 
@@ -855,393 +1039,139 @@ function savePastedDraws(){
    COUNTS
 ========================= */
 
-function getCounts(){
+function getCounts(data=records){
 
-  const counts = Array(25).fill(0);
+const counts=
+Array(25).fill(0);
 
-  records.forEach(record=>{
+data.forEach(record=>{
 
-    record.numbers.forEach(number=>{
+record.numbers.forEach(n=>{
 
-      if(number >= 1 && number <= 24){
-        counts[number]++;
-      }
+if(n>=1 && n<=24){
+counts[n]++;
+}
 
-    });
+});
 
-  });
+});
 
-  return counts;
+return counts;
 
 }
 
 
 /* =========================
-   🔥 MULTIPLE CURRENT STREAKS
+   CURRENT STREAK
 ========================= */
 
-function renderStreak(){
+function getCurrentStreak(number){
 
-  const el = document.getElementById("streakBox");
+let streak=0;
 
-  if(records.length === 0){
+for(
+let i=records.length-1;
+i>=0;
+i--
+){
 
-    el.innerHTML = `
-      <div class="section-title">🔥 Current Streak</div>
-      <div class="muted">No draws yet.</div>
-    `;
+if(
+records[i].numbers.includes(number)
+){
 
-    return;
+streak++;
 
-  }
+}else{
 
-  /*
-    records are stored oldest → newest.
+break;
 
-    We start from the newest draw and move backwards.
+}
 
-    For EVERY number from 1–24:
-    - count how many consecutive latest draws contain it
-    - stop when the number is missing
-  */
+}
 
-  const streaks = [];
-
-  for(let number = 1; number <= 24; number++){
-
-    let streak = 0;
-
-    for(let i = records.length - 1; i >= 0; i--){
-
-      if(records[i].numbers.includes(number)){
-
-        streak++;
-
-      }else{
-
-        break;
-
-      }
-
-    }
-
-    if(streak >= 2){
-
-      streaks.push({
-        number:number,
-        streak:streak
-      });
-
-    }
-
-  }
-
-  if(streaks.length === 0){
-
-    el.innerHTML = `
-      <div class="section-title">🔥 Current Streak</div>
-      <div class="muted">
-        No numbers are currently on a 2+ draw streak.
-      </div>
-    `;
-
-    return;
-
-  }
-
-  /*
-    Group numbers having the same streak length.
-  */
-
-  const groups = {};
-
-  streaks.forEach(item=>{
-
-    if(!groups[item.streak]){
-      groups[item.streak] = [];
-    }
-
-    groups[item.streak].push(item.number);
-
-  });
-
-  /*
-    Highest streak first.
-  */
-
-  const sortedStreaks =
-    Object.keys(groups)
-      .map(Number)
-      .sort((a,b)=>b-a);
-
-
-  let html = `
-    <div class="section-title">
-      🔥 Current Streak
-    </div>
-  `;
-
-  sortedStreaks.forEach(streak=>{
-
-    groups[streak].sort((a,b)=>a-b);
-
-    html += `
-      <div class="streak-row">
-
-        <div class="streak-count">
-          ×${streak}
-        </div>
-
-        <div class="streak-numbers">
-          ${groups[streak].join(" · ")}
-        </div>
-
-      </div>
-    `;
-
-  });
-
-  el.innerHTML = html;
+return streak;
 
 }
 
 
 /* =========================
-   OVERALL FREQUENCY
+   STREAK GROUPS
 ========================= */
 
-function renderOverallFrequency(){
+function renderStreakGroups(){
 
-  const counts = getCounts();
+const box=
+document.getElementById(
+"streakGroups"
+);
 
-  const total = records.length;
+if(!records.length){
 
-  document.getElementById("overallInfo").textContent =
-    `${total} draw${total===1?"":"s"} analyzed`;
+box.innerHTML=
+`<div class="muted">No draws yet.</div>`;
 
-  const chart =
-    document.getElementById("overallChart");
-
-  chart.innerHTML = "";
-
-  if(total === 0) return;
-
-  const maxCount =
-    Math.max(...counts.slice(1));
-
-  for(let number=1; number<=24; number++){
-
-    const wrap = document.createElement("div");
-
-    wrap.className = "bar-wrap";
-
-    const value = document.createElement("div");
-
-    value.className = "bar-value";
-    value.textContent = counts[number];
-
-    const bar = document.createElement("div");
-
-    bar.className = "bar";
-
-    const height =
-      maxCount === 0
-      ? 2
-      : (counts[number] / maxCount) * 170;
-
-    bar.style.height =
-      Math.max(height,2) + "px";
-
-    const label = document.createElement("div");
-
-    label.className = "bar-label";
-    label.textContent = number;
-
-    wrap.appendChild(value);
-    wrap.appendChild(bar);
-    wrap.appendChild(label);
-
-    chart.appendChild(wrap);
-
-  }
+return;
 
 }
 
+const groups={};
 
-/* =========================
-   FREQUENCY GROUPS
-========================= */
+for(let n=1;n<=24;n++){
 
-function renderFrequencyGroups(){
+const streak=
+getCurrentStreak(n);
 
-  const container =
-    document.getElementById("frequencyGroups");
+if(streak>=2){
 
-  if(records.length === 0){
+if(!groups[streak]){
+groups[streak]=[];
+}
 
-    container.innerHTML =
-      `<div class="muted">No draws yet.</div>`;
-
-    return;
-
-  }
-
-  const counts = getCounts();
-
-  const groups = {};
-
-  for(let number=1; number<=24; number++){
-
-    const count = counts[number];
-
-    if(!groups[count]){
-      groups[count] = [];
-    }
-
-    groups[count].push(number);
-
-  }
-
-  const sortedCounts =
-    Object.keys(groups)
-      .map(Number)
-      .sort((a,b)=>b-a);
-
-  let html = "";
-
-  sortedCounts.forEach(count=>{
-
-    html += `
-      <div class="group">
-
-        <div class="group-title">
-          ${count}/${records.length}
-        </div>
-
-        <div class="group-numbers">
-          ${groups[count].join(" · ")}
-        </div>
-
-      </div>
-    `;
-
-  });
-
-  container.innerHTML = html;
+groups[streak].push(n);
 
 }
 
+}
 
-/* =========================
-   NUMBER STATISTICS
-========================= */
+const streaks=
+Object.keys(groups)
+.map(Number)
+.sort((a,b)=>b-a);
 
-function renderNumberStats(){
+if(!streaks.length){
 
-  const container =
-    document.getElementById("numberStats");
+box.innerHTML=
+`<div class="muted">
+No current streaks of 2 or more.
+</div>`;
 
-  if(records.length === 0){
+return;
 
-    container.innerHTML =
-      `<div class="muted">No draws yet.</div>`;
+}
 
-    return;
+let html="";
 
-  }
+streaks.forEach(streak=>{
 
-  const counts = getCounts();
+html+=`
 
-  let most = [];
-  let least = [];
+<div class="group">
 
-  const max = Math.max(...counts.slice(1));
-  const min = Math.min(...counts.slice(1));
+<div class="group-title">
+🔥 ×${streak}
+</div>
 
-  for(let number=1; number<=24; number++){
+<div class="group-numbers">
+${groups[streak].join(" · ")}
+</div>
 
-    if(counts[number] === max){
-      most.push(number);
-    }
+</div>
 
-    if(counts[number] === min){
-      least.push(number);
-    }
+`;
 
-  }
+});
 
-  let html = `
-    <div class="stat-grid">
-  `;
-
-  for(let number=1; number<=24; number++){
-
-    let lastSeen = "Never";
-
-    for(let i=records.length-1; i>=0; i--){
-
-      if(records[i].numbers.includes(number)){
-
-        lastSeen =
-          `${records.length-i} draw${records.length-i===1?"":"s"} ago`;
-
-        break;
-
-      }
-
-    }
-
-    const percentage =
-      ((counts[number] / records.length) * 100)
-      .toFixed(1);
-
-    html += `
-      <div class="stat">
-
-        <div class="stat-title">
-          Number ${number}
-        </div>
-
-        <div class="stat-value">
-          ${counts[number]} time${counts[number]===1?"":"s"}
-        </div>
-
-        <div class="stat-title">
-          ${percentage}%
-        </div>
-
-        <div class="stat-title">
-          Last: ${lastSeen}
-        </div>
-
-      </div>
-    `;
-
-  }
-
-  html += `
-    </div>
-
-    <br>
-
-    <div class="stat">
-      <div class="stat-title">Most frequent</div>
-      <div class="stat-value">
-        ${most.join(" · ")} — ${max}/${records.length}
-      </div>
-    </div>
-
-    <br>
-
-    <div class="stat">
-      <div class="stat-title">Least frequent</div>
-      <div class="stat-value">
-        ${least.join(" · ")} — ${min}/${records.length}
-      </div>
-    </div>
-  `;
-
-  container.innerHTML = html;
+box.innerHTML=html;
 
 }
 
@@ -1252,224 +1182,403 @@ function renderNumberStats(){
 
 function setRecentRange(amount,button){
 
-  recentRange = amount;
+recentRange=amount;
 
-  document.querySelectorAll(".range-btn")
-    .forEach(btn=>{
-      btn.classList.remove("active");
-    });
+document
+.querySelectorAll(".range-buttons button")
+.forEach(btn=>{
+btn.classList.remove("active");
+});
 
-  button.classList.add("active");
+button.classList.add("active");
 
-  renderRecentFrequency();
+renderRecent();
 
 }
 
 
 function getRecentRecords(){
 
-  if(recentRange === 0){
-    return records;
-  }
+if(recentRange===0){
+return records;
+}
 
-  return records.slice(
-    Math.max(0,records.length-recentRange)
-  );
+return records.slice(
+Math.max(
+0,
+records.length-recentRange
+)
+);
+
+
+/* =========================
+   RECENT GRAPH
+========================= */
+
+function renderRecent(){
+
+const recent=
+getRecentRecords();
+
+const counts=
+getCounts(recent);
+
+document.getElementById(
+"recentInfo"
+).textContent=
+`${recent.length} draw${
+recent.length===1?"":"s"
+} analyzed`;
+
+const chart=
+document.getElementById(
+"recentChart"
+);
+
+chart.innerHTML="";
+
+if(!recent.length){
+
+chart.innerHTML=
+`<div class="muted">
+No draws yet.
+</div>`;
+
+document.getElementById(
+"recentGroups"
+).innerHTML="";
+
+return;
+
+}
+
+const max=
+Math.max(...counts.slice(1));
+
+for(let n=1;n<=24;n++){
+
+const wrap=
+document.createElement("div");
+
+wrap.className="bar-wrap";
+
+
+/* STREAK ABOVE BAR */
+
+const streak=
+getCurrentStreak(n);
+
+const streakBox=
+document.createElement("div");
+
+streakBox.className="streak";
+
+if(streak>=2){
+
+streakBox.textContent=
+`🔥×${streak}`;
 
 }
 
 
-function renderRecentFrequency(){
+/* COUNT */
 
-  const recent =
-    getRecentRecords();
+const count=
+document.createElement("div");
 
-  const counts =
-    Array(25).fill(0);
+count.className="bar-count";
 
-  recent.forEach(record=>{
-
-    record.numbers.forEach(number=>{
-
-      if(number>=1 && number<=24){
-        counts[number]++;
-      }
-
-    });
-
-  });
-
-  document.getElementById("recentInfo").textContent =
-    `${recent.length} draw${recent.length===1?"":"s"} analyzed`;
-
-  const chart =
-    document.getElementById("recentChart");
-
-  chart.innerHTML = "";
-
-  if(recent.length === 0){
-
-    document.getElementById("recentGroups").innerHTML =
-      `<div class="muted">No draws yet.</div>`;
-
-    return;
-
-  }
-
-  const maxCount =
-    Math.max(...counts.slice(1));
-
-  for(let number=1; number<=24; number++){
-
-    const wrap = document.createElement("div");
-
-    wrap.className = "bar-wrap";
-
-    const value = document.createElement("div");
-
-    value.className = "bar-value";
-    value.textContent = counts[number];
-
-    const bar = document.createElement("div");
-
-    bar.className = "bar";
-
-    const height =
-      maxCount === 0
-      ? 2
-      : (counts[number] / maxCount) * 170;
-
-    bar.style.height =
-      Math.max(height,2) + "px";
-
-    const label = document.createElement("div");
-
-    label.className = "bar-label";
-    label.textContent = number;
-
-    wrap.appendChild(value);
-    wrap.appendChild(bar);
-    wrap.appendChild(label);
-
-    chart.appendChild(wrap);
-
-  }
+count.textContent=
+counts[n];
 
 
-  /* Recent frequency groups */
+/* BAR */
 
-  const groups = {};
+const bar=
+document.createElement("div");
 
-  for(let number=1; number<=24; number++){
+bar.className="bar";
 
-    const count = counts[number];
+const height=
+max
+?(counts[n]/max)*170
+:2;
 
-    if(!groups[count]){
-      groups[count] = [];
-    }
+bar.style.height=
+Math.max(2,height)+"px";
 
-    groups[count].push(number);
 
-  }
+/* NUMBER */
 
-  const sorted =
-    Object.keys(groups)
-      .map(Number)
-      .sort((a,b)=>b-a);
+const label=
+document.createElement("div");
 
-  let html = "";
+label.className="bar-number";
 
-  sorted.forEach(count=>{
+label.textContent=n;
 
-    html += `
-      <div class="group">
 
-        <div class="group-title">
-          ${count}/${recent.length}
-        </div>
+wrap.appendChild(streakBox);
+wrap.appendChild(count);
+wrap.appendChild(bar);
+wrap.appendChild(label);
 
-        <div class="group-numbers">
-          ${groups[count].join(" · ")}
-        </div>
+chart.appendChild(wrap);
 
-      </div>
-    `;
+}
 
-  });
 
-  document.getElementById("recentGroups").innerHTML =
-    html;
+/* RECENT GROUPS */
+
+const groups={};
+
+for(let n=1;n<=24;n++){
+
+if(!groups[counts[n]]){
+groups[counts[n]]=[];
+}
+
+groups[counts[n]].push(n);
+
+}
+
+const sorted=
+Object.keys(groups)
+.map(Number)
+.sort((a,b)=>b-a);
+
+let html="";
+
+sorted.forEach(count=>{
+
+html+=`
+
+<div class="group">
+
+<div class="group-title">
+${count}/${recent.length}
+</div>
+
+<div class="group-numbers">
+${groups[count].join(" · ")}
+</div>
+
+</div>
+
+`;
+
+});
+
+document.getElementById(
+"recentGroups"
+).innerHTML=html;
 
 }
 
 
 /* =========================
-   DRAW GRID
+   ALL FREQUENCY GROUPS
 ========================= */
 
-function renderDrawGrid(){
+function renderFrequencyGroups(){
 
-  const container =
-    document.getElementById("drawGrid");
+const box=
+document.getElementById(
+"frequencyGroups"
+);
 
-  if(records.length === 0){
+if(!records.length){
 
-    container.innerHTML =
-      `<div class="muted">No draws yet.</div>`;
+box.innerHTML=
+`<div class="muted">No draws yet.</div>`;
 
-    return;
+return;
 
-  }
+}
 
-  let html = `
-    <div class="grid-row grid-header">
+const counts=getCounts();
 
-      <div class="grid-cell">Draw</div>
+const groups={};
 
-      ${Array.from({length:24},(_,i)=>
-        `<div class="grid-cell">${i+1}</div>`
-      ).join("")}
+for(let n=1;n<=24;n++){
 
-    </div>
-  `;
+if(!groups[counts[n]]){
+groups[counts[n]]=[];
+}
 
-  /*
-    Newest draw first.
-  */
+groups[counts[n]].push(n);
 
-  const newest =
-    [...records].reverse();
+}
 
-  newest.forEach((record,index)=>{
+const sorted=
+Object.keys(groups)
+.map(Number)
+.sort((a,b)=>b-a);
 
-    html += `
-      <div class="grid-row">
+let html="";
 
-        <div class="grid-cell">
-          ${index+1}
-        </div>
+sorted.forEach(count=>{
 
-        ${Array.from({length:24},(_,i)=>{
+html+=`
 
-          const number = i+1;
+<div class="group">
 
-          const drawn =
-            record.numbers.includes(number);
+<div class="group-title">
+${count}/${records.length}
+</div>
 
-          return `
-            <div class="grid-cell ${drawn?"drawn":""}">
-              ${drawn ? "●" : ""}
-            </div>
-          `;
+<div class="group-numbers">
+${groups[count].join(" · ")}
+</div>
 
-        }).join("")}
+</div>
 
-      </div>
-    `;
+`;
 
-  });
+});
 
-  container.innerHTML = html;
+box.innerHTML=html;
+
+}
+
+
+/* =========================
+   NUMBER STATS
+========================= */
+
+function renderNumberStats(){
+
+const box=
+document.getElementById(
+"numberStats"
+);
+
+if(!records.length){
+
+box.innerHTML=
+`<div class="muted">No draws yet.</div>`;
+
+return;
+
+}
+
+const counts=getCounts();
+
+let html=
+`<div class="stats-grid">`;
+
+for(let n=1;n<=24;n++){
+
+let last="Never";
+
+for(
+let i=records.length-1;
+i>=0;
+i--
+){
+
+if(records[i].numbers.includes(n)){
+
+last=
+`${records.length-i} draw${
+records.length-i===1?"":"s"
+} ago`;
+
+break;
+
+}
+
+}
+
+const percentage=
+(
+counts[n]/
+records.length*
+100
+).toFixed(1);
+
+html+=`
+
+<div class="stat">
+
+<div class="stat-name">
+Number ${n}
+</div>
+
+<div class="stat-main">
+${counts[n]} time${
+counts[n]===1?"":"s"
+}
+</div>
+
+<div class="stat-name">
+${percentage}%
+</div>
+
+<div class="stat-name">
+Last: ${last}
+</div>
+
+</div>
+
+`;
+
+}
+
+html+="</div>";
+
+const max=
+Math.max(...counts.slice(1));
+
+const min=
+Math.min(...counts.slice(1));
+
+const most=[];
+const least=[];
+
+for(let n=1;n<=24;n++){
+
+if(counts[n]===max)
+most.push(n);
+
+if(counts[n]===min)
+least.push(n);
+
+}
+
+html+=`
+
+<br>
+
+<div class="group">
+
+<div class="group-title">
+Most Frequent
+</div>
+
+<div class="group-numbers">
+${most.join(" · ")}
+— ${max}/${records.length}
+</div>
+
+</div>
+
+<div class="group">
+
+<div class="group-title">
+Least Frequent
+</div>
+
+<div class="group-numbers">
+${least.join(" · ")}
+— ${min}/${records.length}
+</div>
+
+</div>
+
+`;
+
+box.innerHTML=html;
 
 }
 
@@ -1480,48 +1589,131 @@ function renderDrawGrid(){
 
 function renderHistory(){
 
-  const container =
-    document.getElementById("history");
+const box=
+document.getElementById(
+"history"
+);
 
-  if(records.length === 0){
+if(!records.length){
 
-    container.innerHTML =
-      `<div class="muted">No draws yet.</div>`;
+box.innerHTML=
+`<div class="muted">No draws yet.</div>`;
 
-    return;
+return;
 
-  }
+}
 
-  const newest =
-    [...records].reverse();
+let html="";
 
-  let html = "";
+[...records]
+.reverse()
+.forEach(record=>{
 
-  newest.forEach(record=>{
+const date=
+new Date(record.time);
 
-    const date =
-      new Date(record.time);
+html+=`
 
-    const formatted =
-      date.toLocaleString();
+<div class="history-item">
 
-    html += `
-      <div class="history-item">
+<div class="history-time">
+${date.toLocaleString()}
+</div>
 
-        <div class="history-time">
-          ${formatted}
-        </div>
+<div class="history-numbers">
+${record.numbers.join(" · ")}
+</div>
 
-        <div class="history-numbers">
-          ${record.numbers.join(" · ")}
-        </div>
+</div>
 
-      </div>
-    `;
+`;
 
-  });
+});
 
-  container.innerHTML = html;
+box.innerHTML=html;
+
+}
+
+
+/* =========================
+   DRAW GRID
+========================= */
+
+function renderDrawGrid(){
+
+const box=
+document.getElementById(
+"drawGrid"
+);
+
+if(!records.length){
+
+box.innerHTML=
+`<div class="muted">No draws yet.</div>`;
+
+return;
+
+}
+
+let html=`
+
+<div class="grid-row">
+
+<div class="grid-cell">#</div>
+
+${Array.from(
+{length:24},
+(_,i)=>
+`<div class="grid-cell">${i+1}</div>`
+).join("")}
+
+</div>
+
+`;
+
+[...records]
+.reverse()
+.forEach((record,index)=>{
+
+html+=`
+
+<div class="grid-row">
+
+<div class="grid-cell">
+${index+1}
+</div>
+
+${Array.from(
+{length:24},
+(_,i)=>{
+
+const n=i+1;
+
+const drawn=
+record.numbers.includes(n);
+
+return `
+
+<div class="grid-cell ${
+drawn?"drawn":""
+}">
+
+${drawn?"●":""}
+
+</div>
+
+`;
+
+}
+).join("")}
+
+</div>
+
+`;
+
+});
+
+box.innerHTML=html;
 
 }
 
@@ -1532,43 +1724,44 @@ function renderHistory(){
 
 function clearAll(){
 
-  if(records.length === 0){
-    return;
-  }
+if(!records.length)
+return;
 
-  const confirmed =
-    confirm(
-      "Are you sure you want to delete all saved draws?"
-    );
+if(!confirm(
+"Delete all saved draws?"
+))
+return;
 
-  if(!confirmed){
-    return;
-  }
+records=[];
 
-  records = [];
+localStorage.removeItem(
+STORAGE_KEY
+);
 
-  localStorage.removeItem(STORAGE_KEY);
+resetSelection();
 
-  resetSelection();
-
-  renderAll();
+renderAll();
 
 }
 
 
 /* =========================
-   RENDER EVERYTHING
+   RENDER
 ========================= */
 
 function renderAll(){
 
-  renderStreak();
-  renderOverallFrequency();
-  renderFrequencyGroups();
-  renderNumberStats();
-  renderRecentFrequency();
-  renderDrawGrid();
-  renderHistory();
+renderRecent();
+
+renderStreakGroups();
+
+renderFrequencyGroups();
+
+renderNumberStats();
+
+renderHistory();
+
+renderDrawGrid();
 
 }
 
@@ -1578,6 +1771,7 @@ function renderAll(){
 ========================= */
 
 createKeypad();
+
 loadData();
 
 </script>
