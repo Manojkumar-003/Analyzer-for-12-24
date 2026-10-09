@@ -6,483 +6,315 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>12×24 Analyzer</title>
 <style>
-:root {
-  --bg:#101413;--panel:#1b211f;--panel2:#252d29;
-  --text:#f1f5f2;--muted:#9eaca5;--green:#24c77a;
-  --red:#ff7777;--blue:#54d5f3;--purple:#d68af1;
-  --border:#303a35;
-}
+:root{--bg:#101413;--panel:#1b211f;--panel2:#252d29;--text:#f1f5f2;--muted:#9eaca5;--green:#24c77a;--red:#ff7777;--border:#303a35}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-serif;padding-bottom:88px}
-header{padding:20px 16px 10px}
-h1{font-size:23px;margin:0 0 6px}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-serif;padding-bottom:80px}
+header{padding:18px 15px}
+h1{font-size:23px;margin:0 0 5px}
 h2{font-size:17px;margin:0 0 12px}
-h3{font-size:14px;margin:0 0 8px}
-p{line-height:1.45}
-.muted,.sub{color:var(--muted);font-size:12px}
-.page{display:none;padding:10px 14px 20px}
+h3{font-size:14px}
+p,.muted{font-size:12px;color:var(--muted);line-height:1.5}
+.page{display:none;padding:0 13px 20px}
 .page.active{display:block}
-.card{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:14px;margin-bottom:13px}
-.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.stat{background:var(--panel2);padding:13px;border-radius:12px}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:15px;padding:14px;margin-bottom:12px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.stat{background:var(--panel2);border-radius:11px;padding:12px}
 .stat strong{display:block;font-size:25px;margin-top:7px}
-button{border:0;border-radius:10px;padding:12px 14px;font-size:14px;font-weight:bold;cursor:pointer}
-.primary{background:var(--green);color:#07170e}
+button{border:0;border-radius:9px;padding:12px;font-weight:bold;cursor:pointer}
+.primary{background:var(--green);color:#06140d}
 .secondary{background:var(--panel2);color:var(--text)}
 .danger{background:#512b2b;color:white}
 .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-.number-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:7px}
-.num{padding:12px 0;border:1px solid var(--border);background:var(--panel2);color:var(--text);border-radius:10px;font-size:15px}
-.num.selected{background:var(--green);color:#07170e;border-color:var(--green)}
-input,textarea,select{width:100%;padding:12px;border-radius:10px;border:1px solid var(--border);background:#111714;color:var(--text);font-size:14px;margin:7px 0}
-textarea{min-height:90px;resize:vertical}
-.draw-card{padding:12px;background:var(--panel2);border-radius:12px;margin-top:9px}
-.draw-head{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.number-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:7px}
+.num{background:var(--panel2);color:var(--text);border:1px solid var(--border);padding:13px 0}
+.num.selected{background:var(--green);color:#06140d}
+input,textarea,select{width:100%;background:#111714;color:var(--text);border:1px solid var(--border);border-radius:9px;padding:12px;margin:7px 0;font-size:14px}
+textarea{min-height:90px}
 .pills{display:flex;flex-wrap:wrap;gap:6px}
-.pill{min-width:32px;text-align:center;padding:7px 8px;border-radius:50px;background:#131a16;font-size:13px}
-.pill.hit{background:#174b32;color:#79f0ae}
+.pill{background:#111714;padding:8px;min-width:31px;text-align:center;border-radius:20px;font-size:13px}
+.pill.hit{background:#175334;color:#8ff3b6}
 .pill.miss{background:#512b2b;color:#ffaaaa}
-.bar{height:9px;background:#303833;border-radius:10px;overflow:hidden;margin:10px 0}
-.bar>div{height:100%;background:var(--green);width:0}
+.draw-card{background:var(--panel2);padding:12px;border-radius:11px;margin-top:9px}
+.draw-head{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.bar{height:8px;background:#303833;border-radius:8px;overflow:hidden;margin:8px 0}
+.bar div{height:100%;background:var(--green)}
 table{width:100%;border-collapse:collapse;font-size:12px}
-th,td{padding:9px 5px;border-bottom:1px solid var(--border);text-align:center}
+td,th{padding:8px 4px;border-bottom:1px solid var(--border);text-align:center}
 th{color:var(--muted)}
 .scroll{overflow-x:auto}
-.grid-table{display:grid;grid-template-columns:44px repeat(6,minmax(0,1fr));gap:5px}
-.grid-cell{padding:8px 0;text-align:center;border-radius:7px;background:#111714;font-size:12px}
+.grid-table{display:grid;grid-template-columns:35px repeat(6,minmax(0,1fr));gap:4px}
+.grid-cell{background:#111714;border-radius:5px;text-align:center;padding:8px 0;font-size:12px}
 .grid-cell.drawn{background:var(--green);color:#06140d;font-weight:bold}
-.row-label{color:var(--muted);display:flex;align-items:center;justify-content:center}
-.empty{color:var(--muted);text-align:center;padding:18px 5px;font-size:13px}
-.good{color:#70efa7;font-weight:bold}
+.row-label{display:flex;align-items:center;justify-content:center;color:var(--muted)}
+.empty{text-align:center;color:var(--muted);padding:15px;font-size:13px}
+.good{color:#7af0aa;font-weight:bold}
 .bad{color:#ff9999;font-weight:bold}
-.nav{position:fixed;bottom:0;left:0;right:0;z-index:5;background:#181e1b;border-top:1px solid var(--border);display:grid;grid-template-columns:repeat(6,minmax(0,1fr));padding:8px 3px calc(8px + env(safe-area-inset-bottom))}
-.nav button{background:transparent;color:var(--muted);padding:8px 1px;font-size:10px;line-height:1.4;border-radius:9px}
+.nav{position:fixed;bottom:0;left:0;right:0;display:grid;grid-template-columns:repeat(6,1fr);background:#181e1b;border-top:1px solid var(--border);padding:7px 2px calc(7px + env(safe-area-inset-bottom));z-index:5}
+.nav button{background:none;color:var(--muted);padding:7px 0;font-size:10px}
 .nav button span{display:block;font-size:18px;margin-bottom:3px}
-.nav button.active{background:#29332d;color:#8cf0b6}
+.nav button.active{color:#8cf0b6;background:#29332d;border-radius:8px}
 </style>
 </head>
 <body>
 <header>
-  <h1>🔢 12×24 Analyzer</h1>
-  <div class="sub">Draw history · Statistics · Historical comparison</div>
+<h1>🔢 12×24 Analyzer</h1>
+<div class="muted">Draw records · Statistics · Guess checker</div>
 </header>
 
-<section id="dashboard" class="page active">
-  <div class="stats">
-    <div class="stat"><span class="muted">Total draws</span><strong id="dashTotal">0</strong></div>
-    <div class="stat"><span class="muted">Longest current streak</span><strong id="dashStreak">0</strong></div>
-    <div class="stat"><span class="muted">Historical comparisons</span><strong id="dashComparisons">0</strong></div>
-    <div class="stat"><span class="muted">Last draw size</span><strong id="dashLast">—</strong></div>
-  </div>
-  <div class="card" style="margin-top:13px">
-    <h2>Latest saved draw</h2>
-    <div id="dashboardLatest" class="empty">No draws saved yet.</div>
-  </div>
-  <div class="card">
-    <h2>Quick actions</h2>
-    <div class="actions">
-      <button class="primary" onclick="showPage('input')">＋ Add draw</button>
-      <button class="secondary" onclick="showPage('compare')">⇄ Compare draws</button>
-      <button class="secondary" onclick="showPage('grid')">▦ Open grid</button>
-      <button class="secondary" onclick="showPage('analysis')">📊 Analysis</button>
-    </div>
-  </div>
+<section id="home" class="page active">
+<div class="stats">
+<div class="stat">Total draws<strong id="total">0</strong></div>
+<div class="stat">Guess checks<strong id="guessCount">0</strong></div>
+<div class="stat">Latest draw size<strong id="lastSize">—</strong></div>
+<div class="stat">Average matches<strong id="average">—</strong></div>
+</div>
+<div class="card" style="margin-top:12px">
+<h2>Latest draw</h2><div id="latest" class="empty">No draws yet.</div>
+</div>
+<div class="card">
+<h2>Quick actions</h2>
+<div class="actions">
+<button class="primary" onclick="go('input')">＋ Add draw</button>
+<button class="secondary" onclick="go('guess')">✓ Guess checker</button>
+<button class="secondary" onclick="go('grid')">▦ Draw grid</button>
+</div>
+</div>
 </section>
 
 <section id="input" class="page">
-  <div class="card">
-    <h2>Enter one draw</h2>
-    <p class="muted">Select exactly 12 unique numbers from 1 to 24.</p>
-    <p id="selectedCount" class="muted">Selected 0 / 12</p>
-    <div id="keypad" class="number-grid"></div>
-    <div class="actions">
-      <button class="primary" onclick="saveSelectedDraw()">Save draw</button>
-      <button class="secondary" onclick="clearSelected()">Reset</button>
-    </div>
-    <p id="inputMessage" class="muted"></p>
-  </div>
-  <div class="card">
-    <h2>Paste multiple draws</h2>
-    <p class="muted">One draw per line. Use commas, spaces, or semicolons.</p>
-    <textarea id="pasteArea" placeholder="1,2,3,4,5,6,7,8,9,10,11,12"></textarea>
-    <div class="actions">
-      <button class="primary" onclick="pasteDraws()">Add valid draws</button>
-      <button class="secondary" onclick="document.getElementById('pasteArea').value=''">Clear text</button>
-    </div>
-    <p id="pasteMessage" class="muted"></p>
-  </div>
-  <div class="card">
-    <h2>Draw history</h2>
-    <button class="danger" onclick="clearAll()">Clear all saved data</button>
-    <div id="history"></div>
-  </div>
+<div class="card">
+<h2>Add a draw</h2>
+<p>Select exactly 12 unique numbers from 1–24.</p>
+<p id="chosenText">Selected 0/12</p>
+<div id="keypad" class="number-grid"></div>
+<div class="actions">
+<button class="primary" onclick="saveSelected()">Save draw</button>
+<button class="secondary" onclick="resetSelected()">Reset</button>
+</div>
+<p id="inputMsg"></p>
+</div>
+<div class="card">
+<h2>Paste multiple draws</h2>
+<p>One draw per line; use commas or spaces.</p>
+<textarea id="paste" placeholder="1,2,3,4,5,6,7,8,9,10,11,12"></textarea>
+<div class="actions"><button class="primary" onclick="pasteDraws()">Import draws</button></div>
+<p id="pasteMsg"></p>
+</div>
+<div class="card">
+<h2>Draw history</h2>
+<button class="danger" onclick="clearDraws()">Clear all draws</button>
+<div id="history"></div>
+</div>
 </section>
 
 <section id="grid" class="page">
-  <div class="card">
-    <h2>Draw grid</h2>
-    <p class="muted">Newest draw first. Green ✓ means the number was drawn.</p>
-    <div id="drawGrid"></div>
-  </div>
+<div class="card"><h2>Draw grid</h2><p>Green ✓ means the number was drawn.</p><div id="drawGrid"></div></div>
 </section>
 
 <section id="analysis" class="page">
-  <div class="card">
-    <h2>Overall frequency</h2>
-    <p class="muted">Number of appearances in saved draws.</p>
-    <div id="overallFrequency"></div>
-  </div>
-  <div class="card">
-    <h2>Number statistics</h2>
-    <div class="scroll">
-      <table>
-        <thead><tr><th>Number</th><th>Count</th><th>Percent</th></tr></thead>
-        <tbody id="numberStats"></tbody>
-      </table>
-    </div>
-  </div>
-  <div class="card">
-    <h2>Recent frequency</h2>
-    <select id="recentRange" onchange="renderRecent()">
-      <option value="5">Last 5 draws</option>
-      <option value="10">Last 10 draws</option>
-      <option value="20">Last 20 draws</option>
-      <option value="all">All draws</option>
-    </select>
-    <div id="recentFrequency"></div>
-  </div>
+<div class="card"><h2>Overall frequency</h2><div id="frequency"></div></div>
+<div class="card"><h2>Number statistics</h2>
+<div class="scroll"><table><thead><tr><th>Number</th><th>Count</th><th>Rate</th></tr></thead><tbody id="statsTable"></tbody></table></div>
+</div>
+<div class="card"><h2>Recent frequency</h2>
+<select id="recent" onchange="renderRecent()">
+<option value="5">Last 5 draws</option><option value="10">Last 10 draws</option><option value="20">Last 20 draws</option><option value="all">All draws</option>
+</select><div id="recentResults"></div>
+</div>
 </section>
 
 <section id="streak" class="page">
-  <div class="card">
-    <h2>🔥 Current streaks</h2>
-    <p class="muted">Consecutive most-recent saved draws containing each number. Historical description only.</p>
-    <div id="streaks"></div>
-  </div>
+<div class="card"><h2>🔥 Current streaks</h2><p>Consecutive latest saved draws containing a number. Historical only.</p><div id="streaks"></div></div>
 </section>
 
-<section id="compare" class="page">
-  <div class="card">
-    <h2>⇄ Historical comparison</h2>
-    <p class="muted">Compare two completed draws already saved in your history. This describes past results; it does not predict future draws.</p>
-    <label for="drawA">First completed draw</label>
-    <select id="drawA"></select>
-    <label for="drawB">Second completed draw</label>
-    <select id="drawB"></select>
-    <button class="primary" style="width:100%;margin-top:8px" onclick="compareDraws()">Compare draws</button>
-    <div id="comparisonResult"></div>
-  </div>
-  <div class="card">
-    <h2>Comparison history</h2>
-    <div id="comparisonHistory"></div>
-    <button class="secondary" onclick="clearComparisons()">Clear comparison history</button>
-  </div>
+<section id="guess" class="page">
+<div class="card">
+<h2>✓ Guess checker</h2>
+<p>Enter your own 12-number guess. When the actual result is available, enter it to compare. This checks accuracy; it does not predict future results.</p>
+<h3>Your saved guess</h3>
+<div id="guessKeypad" class="number-grid"></div>
+<p id="guessSelectedText">Selected 0/12</p>
+<button class="primary" style="width:100%" onclick="saveGuess()">Save guess</button>
+<p id="guessMsg"></p>
+</div>
+<div class="card">
+<h2>Actual result</h2>
+<p>Enter the 12 numbers from the completed draw.</p>
+<div id="actualKeypad" class="number-grid"></div>
+<p id="actualSelectedText">Selected 0/12</p>
+<button class="primary" style="width:100%" onclick="checkGuess()">Check matches</button>
+<button class="secondary" style="width:100%;margin-top:8px" onclick="resetActual()">Reset actual result</button>
+<div id="guessResult"></div>
+</div>
+<div class="card">
+<h2>Accuracy history</h2>
+<div id="guessHistory"></div>
+<button class="secondary" onclick="clearGuessHistory()">Clear accuracy history</button>
+</div>
 </section>
 
 <nav class="nav">
-  <button class="active" onclick="showPage('dashboard',this)"><span>🏠</span>Home</button>
-  <button onclick="showPage('input',this)"><span>🔢</span>Input</button>
-  <button onclick="showPage('grid',this)"><span>🟩</span>Grid</button>
-  <button onclick="showPage('analysis',this)"><span>📊</span>Analysis</button>
-  <button onclick="showPage('streak',this)"><span>🔥</span>Streak</button>
-  <button onclick="showPage('compare',this)"><span>⇄</span>Compare</button>
+<button class="active" onclick="go('home',this)"><span>🏠</span>Home</button>
+<button onclick="go('input',this)"><span>🔢</span>Input</button>
+<button onclick="go('grid',this)"><span>🟩</span>Grid</button>
+<button onclick="go('analysis',this)"><span>📊</span>Analysis</button>
+<button onclick="go('streak',this)"><span>🔥</span>Streak</button>
+<button onclick="go('guess',this)"><span>✓</span>Guess</button>
 </nav>
 
 <script>
-const STORAGE_KEY = "condition1_number_history";
-const COMPARE_KEY = "condition1_comparison_history";
-let records = [];
-let comparisons = [];
-let selectedNumbers = new Set();
+const DRAW_KEY="condition1_number_history";
+const GUESS_KEY="condition1_guess_history";
+let records=[],checks=[],selected=new Set(),guessSet=new Set(),actualSet=new Set();
 
-function loadData(){
-  try{
-    const saved=JSON.parse(localStorage.getItem(STORAGE_KEY)||"[]");
-    records=Array.isArray(saved)?saved.filter(r=>Array.isArray(r.numbers)&&r.numbers.length===12):[];
-  }catch(e){records=[]}
-  try{
-    const saved=JSON.parse(localStorage.getItem(COMPARE_KEY)||"[]");
-    comparisons=Array.isArray(saved)?saved:[];
-  }catch(e){comparisons=[]}
+function load(){
+ try{records=JSON.parse(localStorage.getItem(DRAW_KEY)||"[]")}catch(e){records=[]}
+ try{checks=JSON.parse(localStorage.getItem(GUESS_KEY)||"[]")}catch(e){checks=[]}
+ if(!Array.isArray(records))records=[];
+ if(!Array.isArray(checks))checks=[];
+ records=records.filter(r=>r&&Array.isArray(r.numbers)&&valid(r.numbers));
 }
-function persist(){
-  localStorage.setItem(STORAGE_KEY,JSON.stringify(records));
+function saveRecords(){localStorage.setItem(DRAW_KEY,JSON.stringify(records))}
+function saveChecks(){localStorage.setItem(GUESS_KEY,JSON.stringify(checks))}
+function valid(a){return Array.isArray(a)&&a.length===12&&a.every(n=>Number.isInteger(n)&&n>=1&&n<=24)&&new Set(a).size===12}
+function newest(){return [...records].reverse()}
+function go(id,btn){
+ document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+ document.getElementById(id).classList.add("active");
+ document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
+ if(btn)btn.classList.add("active");
+ else document.querySelectorAll(".nav button")[({home:0,input:1,grid:2,analysis:3,streak:4,guess:5})[id]].classList.add("active");
+ window.scrollTo(0,0);
 }
-function persistComparisons(){
-  localStorage.setItem(COMPARE_KEY,JSON.stringify(comparisons));
+function makeKeypad(id,set,labelId){
+ const el=document.getElementById(id);el.innerHTML="";
+ for(let n=1;n<=24;n++){
+  const b=document.createElement("button");b.className="num";b.textContent=n;
+  b.onclick=()=>{
+   if(set.has(n))set.delete(n);
+   else if(set.size<12)set.add(n);
+   else return;
+   paintKeypad(id,set,labelId);
+  };
+  el.appendChild(b);
+ }
+ paintKeypad(id,set,labelId);
 }
-function showPage(id,button){
-  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-  document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
-  if(button)button.classList.add("active");
-  else{
-    const map={dashboard:0,input:1,grid:2,analysis:3,streak:4,compare:5};
-    document.querySelectorAll(".nav button")[map[id]].classList.add("active");
-  }
-  window.scrollTo(0,0);
+function paintKeypad(id,set,labelId){
+ [...document.getElementById(id).children].forEach((b,i)=>b.classList.toggle("selected",set.has(i+1)));
+ document.getElementById(labelId).textContent="Selected "+set.size+"/12";
 }
-function timeLabel(time){
-  const d=new Date(time);
-  return isNaN(d.getTime())?"Unknown time":d.toLocaleString();
-}
-function sortedNewest(){
-  return [...records].reverse();
-}
-function validNumbers(arr){
-  return arr.length===12 &&
-    arr.every(n=>Number.isInteger(n)&&n>=1&&n<=24) &&
-    new Set(arr).size===12;
-}
-function addDraw(numbers){
-  if(!validNumbers(numbers))return false;
-  records.push({numbers:[...numbers].sort((a,b)=>a-b),time:new Date().toISOString()});
-  persist();
-  return true;
-}
-function buildKeypad(){
-  const el=document.getElementById("keypad");
-  el.innerHTML="";
-  for(let n=1;n<=24;n++){
-    const b=document.createElement("button");
-    b.className="num";
-    b.textContent=n;
-    b.onclick=()=>{
-      if(selectedNumbers.has(n))selectedNumbers.delete(n);
-      else if(selectedNumbers.size<12)selectedNumbers.add(n);
-      else{
-        document.getElementById("inputMessage").textContent="You can select at most 12 numbers.";
-        return;
-      }
-      document.getElementById("inputMessage").textContent="";
-      renderKeypad();
-    };
-    el.appendChild(b);
-  }
-  renderKeypad();
-}
-function renderKeypad(){
-  [...document.querySelectorAll("#keypad .num")].forEach((b,i)=>{
-    b.classList.toggle("selected",selectedNumbers.has(i+1));
-  });
-  document.getElementById("selectedCount").textContent=
-    "Selected "+selectedNumbers.size+" / 12";
-}
-function clearSelected(){
-  selectedNumbers.clear();
-  document.getElementById("inputMessage").textContent="";
-  renderKeypad();
-}
-function saveSelectedDraw(){
-  if(selectedNumbers.size!==12){
-    document.getElementById("inputMessage").textContent="Select exactly 12 numbers first.";
-    return;
-  }
-  addDraw([...selectedNumbers]);
-  clearSelected();
-  renderAll();
-  document.getElementById("inputMessage").textContent="Draw saved.";
+function resetSelected(){selected.clear();paintKeypad("keypad",selected,"chosenText")}
+function resetActual(){actualSet.clear();paintKeypad("actualKeypad",actualSet,"actualSelectedText")}
+function addDraw(a){records.push({numbers:[...a].sort((x,y)=>x-y),time:new Date().toISOString()});saveRecords()}
+function saveSelected(){
+ if(!valid([...selected])){document.getElementById("inputMsg").textContent="Select exactly 12 unique numbers.";return}
+ addDraw([...selected]);resetSelected();document.getElementById("inputMsg").textContent="Draw saved.";renderAll();
 }
 function pasteDraws(){
-  const text=document.getElementById("pasteArea").value.trim();
-  if(!text){
-    document.getElementById("pasteMessage").textContent="Paste your draws first.";
-    return;
-  }
-  let added=0,errors=[];
-  text.split(/\n/).forEach((line,i)=>{
-    if(!line.trim())return;
-    const parts=line.trim().split(/[,\s;]+/).filter(Boolean);
-    const nums=parts.map(Number);
-    if(validNumbers(nums)){
-      addDraw(nums);added++;
-    }else{
-      errors.push("Line "+(i+1)+": needs 12 unique integers from 1–24.");
-    }
-  });
-  document.getElementById("pasteMessage").textContent=
-    added+" draw(s) added."+ (errors.length?" "+errors.join(" "):"");
-  renderAll();
+ const text=document.getElementById("paste").value.trim();let added=0,bad=0;
+ text.split(/\n/).forEach(line=>{
+  if(!line.trim())return;
+  const a=line.trim().split(/[,\s;]+/).map(Number);
+  if(valid(a)){addDraw(a);added++}else bad++;
+ });
+ document.getElementById("pasteMsg").textContent=added+" draw(s) added; "+bad+" invalid line(s).";
+ renderAll();
 }
-function clearAll(){
-  if(!confirm("Delete all saved draws and comparisons? This cannot be undone."))return;
-  records=[];
-  comparisons=[];
-  persist();
-  persistComparisons();
-  renderAll();
+function clearDraws(){
+ if(!confirm("Delete all saved draws?"))return;
+ records=[];saveRecords();renderAll();
 }
-function clearComparisons(){
-  if(!confirm("Clear comparison history?"))return;
-  comparisons=[];
-  persistComparisons();
-  renderComparisonHistory();
-  renderDashboard();
+function stamp(t){return new Date(t).toLocaleString()}
+function pills(a,other=null){
+ return '<div class="pills">'+a.map(n=>'<span class="pill '+(other?(other.has(n)?"hit":"miss"):"")+'">'+n+'</span>').join("")+'</div>';
 }
-function countFrequencies(list){
-  const counts=Array(25).fill(0);
-  list.forEach(r=>r.numbers.forEach(n=>counts[n]++));
-  return counts;
-}
-function pillNumbers(nums,hitSet=null){
-  return '<div class="pills">'+nums.map(n=>{
-    let cls="pill";
-    if(hitSet)cls+=hitSet.has(n)?" hit":" miss";
-    return '<span class="'+cls+'">'+n+'</span>';
-  }).join("")+'</div>';
-}
-function renderDashboard(){
-  const newest=sortedNewest();
-  document.getElementById("dashTotal").textContent=records.length;
-  document.getElementById("dashStreak").textContent=getLongestCurrentStreak();
-  document.getElementById("dashComparisons").textContent=comparisons.length;
-  document.getElementById("dashLast").textContent=newest.length?newest[0].numbers.length:"—";
-  const el=document.getElementById("dashboardLatest");
-  if(!newest.length){el.innerHTML="No draws saved yet.";return}
-  el.innerHTML='<div class="draw-head"><span>Latest draw</span><span class="muted">'+timeLabel(newest[0].time)+'</span></div>'+pillNumbers(newest[0].numbers);
+function renderHome(){
+ const n=newest();
+ document.getElementById("total").textContent=records.length;
+ document.getElementById("guessCount").textContent=checks.length;
+ document.getElementById("lastSize").textContent=n.length?n[0].numbers.length:"—";
+ document.getElementById("average").textContent=checks.length?(checks.reduce((s,c)=>s+c.matches,0)/checks.length).toFixed(1)+"/12":"—";
+ document.getElementById("latest").innerHTML=n.length?'<p>'+stamp(n[0].time)+'</p>'+pills(n[0].numbers):"No draws yet.";
 }
 function renderHistory(){
-  const el=document.getElementById("history");
-  const newest=sortedNewest();
-  if(!newest.length){el.innerHTML='<div class="empty">No saved draws yet.</div>';return}
-  el.innerHTML=newest.map((r,i)=>
-    '<div class="draw-card"><div class="draw-head"><b>Draw '+(i+1)+'</b><span class="muted">'+timeLabel(r.time)+'</span></div>'+
-    pillNumbers(r.numbers)+'</div>'
-  ).join("");
+ const el=document.getElementById("history"),n=newest();
+ el.innerHTML=n.length?n.map((r,i)=>'<div class="draw-card"><b>Draw '+(i+1)+'</b><p>'+stamp(r.time)+'</p>'+pills(r.numbers)+'</div>').join(""):'<div class="empty">No draws saved.</div>';
 }
-function renderDrawGrid(){
-  const el=document.getElementById("drawGrid");
-  const newest=sortedNewest();
-  if(!newest.length){el.innerHTML='<div class="empty">No draws saved yet.</div>';return}
-  el.innerHTML=newest.map((r,i)=>{
-    let html='<div class="grid-table"><div class="row-label">'+(i+1)+'</div>';
-    for(let n=1;n<=24;n++){
-      const drawn=r.numbers.includes(n);
-      html+='<div class="grid-cell '+(drawn?'drawn':'')+'">'+(drawn?'✓':'')+'</div>';
-    }
-    return html+'</div>';
-  }).join('<div style="height:8px"></div>');
+function renderGrid(){
+ const n=newest(),el=document.getElementById("drawGrid");
+ el.innerHTML=n.length?n.map((r,i)=>{
+  let s='<div class="grid-table"><div class="row-label">'+(i+1)+'</div>';
+  for(let x=1;x<=24;x++)s+='<div class="grid-cell '+(r.numbers.includes(x)?"drawn":"")+'">'+(r.numbers.includes(x)?"✓":"")+'</div>';
+  return s+'</div>';
+ }).join('<div style="height:8px"></div>'):'<div class="empty">No draws saved.</div>';
 }
-function renderOverall(){
-  const counts=countFrequencies(records);
-  const max=Math.max(1,...counts.slice(1));
-  let html="";
-  for(let n=1;n<=24;n++){
-    const pct=records.length?counts[n]/records.length*100:0;
-    html+='<div style="margin:10px 0"><div class="draw-head"><span>'+n+'</span><span class="muted">'+counts[n]+' times · '+pct.toFixed(1)+'%</span></div><div class="bar"><div style="width:'+(counts[n]/max*100)+'%"></div></div></div>';
-  }
-  document.getElementById("overallFrequency").innerHTML=records.length?html:'<div class="empty">Save draws to see frequency.</div>';
-  document.getElementById("numberStats").innerHTML=Array.from({length:24},(_,i)=>{
-    const n=i+1,pct=records.length?counts[n]/records.length*100:0;
-    return '<tr><td>'+n+'</td><td>'+counts[n]+'</td><td>'+pct.toFixed(1)+'%</td></tr>';
-  }).join("");
+function freq(list){
+ const c=Array(25).fill(0);list.forEach(r=>r.numbers.forEach(n=>c[n]++));return c;
+}
+function renderFrequency(){
+ const c=freq(records),max=Math.max(1,...c.slice(1));
+ document.getElementById("frequency").innerHTML=records.length?Array.from({length:24},(_,i)=>{
+  let n=i+1;return '<div style="margin:10px 0"><div class="draw-head"><span>'+n+'</span><span class="muted">'+c[n]+' times</span></div><div class="bar"><div style="width:'+(c[n]/max*100)+'%"></div></div></div>';
+ }).join(""):'<div class="empty">Save draws to view frequency.</div>';
+ document.getElementById("statsTable").innerHTML=Array.from({length:24},(_,i)=>{
+  const n=i+1;return '<tr><td>'+n+'</td><td>'+c[n]+'</td><td>'+(records.length?(c[n]/records.length*100).toFixed(1):"0.0")+'%</td></tr>';
+ }).join("");
 }
 function renderRecent(){
-  const value=document.getElementById("recentRange").value;
-  const newest=sortedNewest();
-  const list=value==="all"?newest:newest.slice(0,Number(value));
-  const counts=countFrequencies(list);
-  const max=Math.max(1,...counts.slice(1));
-  let html='<p class="muted">Based on '+list.length+' saved draw(s).</p>';
-  for(let n=1;n<=24;n++){
-    html+='<div style="margin:9px 0"><div class="draw-head"><span>'+n+'</span><span class="muted">'+counts[n]+' times</span></div><div class="bar"><div style="width:'+(counts[n]/max*100)+'%"></div></div></div>';
-  }
-  document.getElementById("recentFrequency").innerHTML=list.length?html:'<div class="empty">No draws available.</div>';
+ const v=document.getElementById("recent").value,n=newest(),list=v==="all"?n:n.slice(0,Number(v)),c=freq(list),max=Math.max(1,...c.slice(1));
+ document.getElementById("recentResults").innerHTML=list.length?Array.from({length:24},(_,i)=>{
+  const x=i+1;return '<div style="margin:9px 0"><div class="draw-head"><span>'+x+'</span><span class="muted">'+c[x]+' times</span></div><div class="bar"><div style="width:'+(c[x]/max*100)+'%"></div></div></div>';
+ }).join(""):'<div class="empty">No draws available.</div>';
 }
-function getCurrentStreak(n){
-  let count=0;
-  for(const r of sortedNewest()){
-    if(r.numbers.includes(n))count++;
-    else break;
-  }
-  return count;
-}
-function getLongestCurrentStreak(){
-  let longest=0;
-  for(let n=1;n<=24;n++)longest=Math.max(longest,getCurrentStreak(n));
-  return longest;
+function streak(n){
+ let k=0;for(const r of newest()){if(r.numbers.includes(n))k++;else break}return k;
 }
 function renderStreaks(){
-  const items=[];
-  for(let n=1;n<=24;n++){
-    const count=getCurrentStreak(n);
-    if(count>=2)items.push({n,count});
-  }
-  items.sort((a,b)=>b.count-a.count||a.n-b.n);
-  document.getElementById("streaks").innerHTML=items.length?
-    items.map(x=>'<div class="draw-card"><span class="good">🔥 ×'+x.count+'</span> &nbsp; Number '+x.n+'</div>').join(""):
-    '<div class="empty">No current streak of 2 or more draws.</div>';
+ const a=[];for(let n=1;n<=24;n++){const k=streak(n);if(k>=2)a.push({n,k})}
+ a.sort((x,y)=>y.k-x.k||x.n-y.n);
+ document.getElementById("streaks").innerHTML=a.length?a.map(x=>'<div class="draw-card"><span class="good">🔥 ×'+x.k+'</span> &nbsp; Number '+x.n+'</div>').join(""):'<div class="empty">No streak of 2 or more draws.</div>';
 }
-function refreshCompareSelects(){
-  const newest=sortedNewest();
-  ["drawA","drawB"].forEach(id=>{
-    const el=document.getElementById(id);
-    const previous=el.value;
-    el.innerHTML="";
-    newest.forEach((r,i)=>{
-      const opt=document.createElement("option");
-      opt.value=i;
-      opt.textContent="Draw "+(i+1)+" — "+timeLabel(r.time);
-      el.appendChild(opt);
-    });
-    if(previous!==""&&Number(previous)<newest.length)el.value=previous;
-  });
-  if(newest.length>1&&document.getElementById("drawB").value==="0")document.getElementById("drawB").value="1";
+function saveGuess(){
+ if(!valid([...guessSet])){document.getElementById("guessMsg").textContent="Select exactly 12 unique numbers.";return}
+ document.getElementById("guessMsg").textContent="Guess saved: "+[...guessSet].sort((a,b)=>a-b).join(", ");
 }
-function compareDraws(){
-  const newest=sortedNewest();
-  if(newest.length<2){
-    document.getElementById("comparisonResult").innerHTML='<div class="empty">Save at least two completed draws first.</div>';
-    return;
-  }
-  const a=newest[Number(document.getElementById("drawA").value)];
-  const b=newest[Number(document.getElementById("drawB").value)];
-  if(!a||!b)return;
-  if(a===b){
-    document.getElementById("comparisonResult").innerHTML='<div class="empty">Choose two different draws.</div>';
-    return;
-  }
-  const hits=a.numbers.filter(n=>b.numbers.includes(n));
-  const onlyA=a.numbers.filter(n=>!b.numbers.includes(n));
-  const onlyB=b.numbers.filter(n=>!a.numbers.includes(n));
-  const entry={
-    time:new Date().toISOString(),
-    aTime:a.time,bTime:b.time,
-    a:[...a.numbers],b:[...b.numbers],
-    matches:hits.length,onlyA,onlyB
-  };
-  comparisons.unshift(entry);
-  persistComparisons();
-  document.getElementById("comparisonResult").innerHTML=
-    '<div class="draw-card"><h3>Matching numbers: <span class="good">'+hits.length+' / 12</span></h3>'+
-    pillNumbers(hits)+'<p class="muted">Numbers only in first draw: '+(onlyA.join(", ")||"None")+'</p>'+
-    '<p class="muted">Numbers only in second draw: '+(onlyB.join(", ")||"None")+'</p>'+
-    '<p class="muted">Match rate: '+(hits.length/12*100).toFixed(1)+'%</p></div>';
-  renderComparisonHistory();
-  renderDashboard();
+function checkGuess(){
+ if(!valid([...guessSet])){document.getElementById("guessResult").innerHTML='<p class="bad">Save a guess by selecting 12 numbers above.</p>';return}
+ if(!valid([...actualSet])){document.getElementById("guessResult").innerHTML='<p class="bad">Select exactly 12 actual-result numbers.</p>';return}
+ const guess=[...guessSet].sort((a,b)=>a-b),actual=[...actualSet].sort((a,b)=>a-b);
+ const hit=guess.filter(n=>actual.includes(n)),miss=guess.filter(n=>!actual.includes(n)),extra=actual.filter(n=>!guess.includes(n));
+ const c={time:new Date().toISOString(),guess,actual,matches:hit.length,misses:miss.length,notGuessed:extra};
+ checks.unshift(c);saveChecks();
+ document.getElementById("guessResult").innerHTML=
+ '<div class="draw-card"><h3>Comparison result</h3><div class="stats">'+
+ '<div class="stat">Correct matches<strong class="good">'+hit.length+'</strong></div>'+
+ '<div class="stat">Guessed but absent<strong class="bad">'+miss.length+'</strong></div>'+
+ '<div class="stat">Actual numbers missed<strong>'+extra.length+'</strong></div>'+
+ '<div class="stat">Match rate<strong>'+(hit.length/12*100).toFixed(1)+'%</strong></div>'+
+ '</div><p>Correctly matched numbers:</p>'+pills(hit)+
+ '<p>Your guessed numbers not in the result:</p>'+pills(miss)+
+ '<p>Actual numbers not in your guess:</p>'+pills(extra)+
+ '<p class="muted">Historical comparison only; not a prediction.</p></div>';
+ renderGuessHistory();renderHome();
 }
-function renderComparisonHistory(){
-  const el=document.getElementById("comparisonHistory");
-  if(!comparisons.length){el.innerHTML='<div class="empty">No comparisons yet.</div>';return}
-  el.innerHTML=comparisons.map((c,i)=>
-    '<div class="draw-card"><div class="draw-head"><b>Comparison '+(i+1)+'</b><span class="good">'+c.matches+'/12 matches</span></div>'+
-    '<p class="muted">First: '+timeLabel(c.aTime)+'</p>'+
-    '<p class="muted">Second: '+timeLabel(c.bTime)+'</p>'+
-    '<p>'+pillNumbers(c.a)+'</p><p>'+pillNumbers(c.b)+'</p></div>'
-  ).join("");
+function renderGuessHistory(){
+ const el=document.getElementById("guessHistory");
+ el.innerHTML=checks.length?checks.map((c,i)=>
+ '<div class="draw-card"><div class="draw-head"><b>Check '+(i+1)+'</b><span class="good">'+c.matches+'/12 matches</span></div><p>'+stamp(c.time)+'</p><p>Your guess</p>'+pills(c.guess,new Set(c.actual))+'<p>Actual result</p>'+pills(c.actual,new Set(c.guess))+'<p class="muted">Match rate: '+(c.matches/12*100).toFixed(1)+'%</p></div>'
+ ).join(""):'<div class="empty">No checks saved yet.</div>';
+}
+function clearGuessHistory(){
+ if(!confirm("Clear saved guess-check history?"))return;
+ checks=[];saveChecks();renderGuessHistory();renderHome();
 }
 function renderAll(){
-  renderDashboard();
-  renderHistory();
-  renderDrawGrid();
-  renderOverall();
-  renderRecent();
-  renderStreaks();
-  refreshCompareSelects();
-  renderComparisonHistory();
+ renderHome();renderHistory();renderGrid();renderFrequency();renderRecent();renderStreaks();renderGuessHistory();
 }
-loadData();
-buildKeypad();
+load();
+makeKeypad("keypad",selected,"chosenText");
+makeKeypad("guessKeypad",guessSet,"guessSelectedText");
+makeKeypad("actualKeypad",actualSet,"actualSelectedText");
 renderAll();
 </script>
 </body>
