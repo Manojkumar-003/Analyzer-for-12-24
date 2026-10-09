@@ -42,8 +42,15 @@ table{width:100%;border-collapse:collapse;font-size:12px}
 td,th{padding:8px 4px;border-bottom:1px solid var(--border);text-align:center}
 th{color:var(--muted)}
 .scroll{overflow-x:auto}
-.grid-table{display:grid;grid-template-columns:35px repeat(6,minmax(0,1fr));gap:4px}
-.grid-cell{background:#111714;border-radius:5px;text-align:center;padding:8px 0;font-size:12px}
+.grid-table{
+ display:grid;
+ grid-template-columns:35px repeat(24,minmax(25px,1fr));
+ gap:4px;
+ min-width:850px;
+ margin-bottom:8px
+}
+#drawGrid{overflow-x:auto;width:100%}
+.grid-cell{background:#111714;border-radius:5px;text-align:center;padding:8px 0;font-size:12px;min-width:0}
 .grid-cell.drawn{background:var(--green);color:#06140d;font-weight:bold}
 .row-label{display:flex;align-items:center;justify-content:center;color:var(--muted)}
 .empty{text-align:center;color:var(--muted);padding:15px;font-size:13px}
@@ -53,9 +60,14 @@ th{color:var(--muted)}
 .nav button{background:none;color:var(--muted);padding:7px 0;font-size:10px}
 .nav button span{display:block;font-size:18px;margin-bottom:3px}
 .nav button.active{color:#8cf0b6;background:#29332d;border-radius:8px}
+@media(max-width:380px){
+ .nav button{font-size:9px}
+ .nav button span{font-size:16px}
+}
 </style>
 </head>
 <body>
+
 <header>
 <h1>🔢 12×24 Analyzer</h1>
 <div class="muted">Draw records · Statistics · Guess checker</div>
@@ -63,109 +75,137 @@ th{color:var(--muted)}
 
 <section id="home" class="page active">
 <div class="stats">
-<div class="stat">Total draws<strong id="total">0</strong></div>
-<div class="stat">Guess checks<strong id="guessCount">0</strong></div>
-<div class="stat">Latest draw size<strong id="lastSize">—</strong></div>
-<div class="stat">Average matches<strong id="average">—</strong></div>
+ <div class="stat">Total draws<strong id="total">0</strong></div>
+ <div class="stat">Guess checks<strong id="guessCount">0</strong></div>
+ <div class="stat">Latest draw size<strong id="lastSize">—</strong></div>
+ <div class="stat">Average matches<strong id="average">—</strong></div>
 </div>
 <div class="card" style="margin-top:12px">
-<h2>Latest draw</h2><div id="latest" class="empty">No draws yet.</div>
+ <h2>Latest draw</h2><div id="latest" class="empty">No draws yet.</div>
 </div>
 <div class="card">
-<h2>Quick actions</h2>
-<div class="actions">
-<button class="primary" onclick="go('input')">＋ Add draw</button>
-<button class="secondary" onclick="go('guess')">✓ Guess checker</button>
-<button class="secondary" onclick="go('grid')">▦ Draw grid</button>
-</div>
+ <h2>Quick actions</h2>
+ <div class="actions">
+  <button class="primary" onclick="go('input')">＋ Add draw</button>
+  <button class="secondary" onclick="go('guess')">✓ Guess checker</button>
+  <button class="secondary" onclick="go('grid')">▦ Draw grid</button>
+ </div>
 </div>
 </section>
 
 <section id="input" class="page">
 <div class="card">
-<h2>Add a draw</h2>
-<p>Select exactly 12 unique numbers from 1–24.</p>
-<p id="chosenText">Selected 0/12</p>
-<div id="keypad" class="number-grid"></div>
-<div class="actions">
-<button class="primary" onclick="saveSelected()">Save draw</button>
-<button class="secondary" onclick="resetSelected()">Reset</button>
+ <h2>Add a draw</h2>
+ <p>Select exactly 12 unique numbers from 1–24.</p>
+ <p id="chosenText">Selected 0/12</p>
+ <div id="keypad" class="number-grid"></div>
+ <div class="actions">
+  <button class="primary" onclick="saveSelected()">Save draw</button>
+  <button class="secondary" onclick="resetSelected()">Reset</button>
+ </div>
+ <p id="inputMsg"></p>
 </div>
-<p id="inputMsg"></p>
-</div>
+
 <div class="card">
-<h2>Paste multiple draws</h2>
-<p>One draw per line; use commas or spaces.</p>
-<textarea id="paste" placeholder="1,2,3,4,5,6,7,8,9,10,11,12"></textarea>
-<div class="actions"><button class="primary" onclick="pasteDraws()">Import draws</button></div>
-<p id="pasteMsg"></p>
+ <h2>Paste multiple draws</h2>
+ <p>One draw per line; use commas or spaces.</p>
+ <textarea id="paste" placeholder="1,2,3,4,5,6,7,8,9,10,11,12"></textarea>
+ <div class="actions"><button class="primary" onclick="pasteDraws()">Import draws</button></div>
+ <p id="pasteMsg"></p>
 </div>
+
 <div class="card">
-<h2>Draw history</h2>
-<button class="danger" onclick="clearDraws()">Clear all draws</button>
-<div id="history"></div>
+ <h2>Draw history</h2>
+ <button class="danger" onclick="clearDraws()">Clear all draws</button>
+ <div id="history"></div>
 </div>
 </section>
 
 <section id="grid" class="page">
-<div class="card"><h2>Draw grid</h2><p>Green ✓ means the number was drawn.</p><div id="drawGrid"></div></div>
+<div class="card">
+ <h2>Draw grid</h2>
+ <p>Numbers 1–24 are across the top. Green ✓ means drawn. Newest draw first.</p>
+ <div id="drawGrid"></div>
+</div>
 </section>
 
 <section id="analysis" class="page">
 <div class="card"><h2>Overall frequency</h2><div id="frequency"></div></div>
-<div class="card"><h2>Number statistics</h2>
-<div class="scroll"><table><thead><tr><th>Number</th><th>Count</th><th>Rate</th></tr></thead><tbody id="statsTable"></tbody></table></div>
+<div class="card">
+ <h2>Number statistics</h2>
+ <div class="scroll">
+  <table>
+   <thead><tr><th>Number</th><th>Count</th><th>Rate</th></tr></thead>
+   <tbody id="statsTable"></tbody>
+  </table>
+ </div>
 </div>
-<div class="card"><h2>Recent frequency</h2>
-<select id="recent" onchange="renderRecent()">
-<option value="5">Last 5 draws</option><option value="10">Last 10 draws</option><option value="20">Last 20 draws</option><option value="all">All draws</option>
-</select><div id="recentResults"></div>
+<div class="card">
+ <h2>Recent frequency</h2>
+ <select id="recent" onchange="renderRecent()">
+  <option value="5">Last 5 draws</option>
+  <option value="10">Last 10 draws</option>
+  <option value="20">Last 20 draws</option>
+  <option value="all">All draws</option>
+ </select>
+ <div id="recentResults"></div>
 </div>
 </section>
 
 <section id="streak" class="page">
-<div class="card"><h2>🔥 Current streaks</h2><p>Consecutive latest saved draws containing a number. Historical only.</p><div id="streaks"></div></div>
+<div class="card">
+ <h2>🔥 Current streaks</h2>
+ <p>Consecutive latest saved draws containing a number. Historical only.</p>
+ <div id="streaks"></div>
+</div>
 </section>
 
 <section id="guess" class="page">
 <div class="card">
-<h2>✓ Guess checker</h2>
-<p>Enter your own 12-number guess. When the actual result is available, enter it to compare. This checks accuracy; it does not predict future results.</p>
-<h3>Your saved guess</h3>
-<div id="guessKeypad" class="number-grid"></div>
-<p id="guessSelectedText">Selected 0/12</p>
-<button class="primary" style="width:100%" onclick="saveGuess()">Save guess</button>
-<p id="guessMsg"></p>
+ <h2>✓ Guess checker</h2>
+ <p>Enter your own 12-number guess. When the actual result is available, enter it to compare. This checks accuracy; it does not predict future results.</p>
+ <h3>Your saved guess</h3>
+ <div id="guessKeypad" class="number-grid"></div>
+ <p id="guessSelectedText">Selected 0/12</p>
+ <button class="primary" style="width:100%" onclick="saveGuess()">Save guess</button>
+ <p id="guessMsg"></p>
 </div>
+
 <div class="card">
-<h2>Actual result</h2>
-<p>Enter the 12 numbers from the completed draw.</p>
-<div id="actualKeypad" class="number-grid"></div>
-<p id="actualSelectedText">Selected 0/12</p>
-<button class="primary" style="width:100%" onclick="checkGuess()">Check matches</button>
-<button class="secondary" style="width:100%;margin-top:8px" onclick="resetActual()">Reset actual result</button>
-<div id="guessResult"></div>
+ <h2>Actual result</h2>
+ <p>Enter the 12 numbers from the completed draw.</p>
+ <div id="actualKeypad" class="number-grid"></div>
+ <p id="actualSelectedText">Selected 0/12</p>
+ <button class="primary" style="width:100%" onclick="checkGuess()">Check matches</button>
+ <button class="secondary" style="width:100%;margin-top:8px" onclick="resetActual()">Reset actual result</button>
+ <div id="guessResult"></div>
 </div>
+
 <div class="card">
-<h2>Accuracy history</h2>
-<div id="guessHistory"></div>
-<button class="secondary" onclick="clearGuessHistory()">Clear accuracy history</button>
+ <h2>Accuracy history</h2>
+ <div id="guessHistory"></div>
+ <button class="secondary" onclick="clearGuessHistory()">Clear accuracy history</button>
 </div>
 </section>
 
 <nav class="nav">
-<button class="active" onclick="go('home',this)"><span>🏠</span>Home</button>
-<button onclick="go('input',this)"><span>🔢</span>Input</button>
-<button onclick="go('grid',this)"><span>🟩</span>Grid</button>
-<button onclick="go('analysis',this)"><span>📊</span>Analysis</button>
-<button onclick="go('streak',this)"><span>🔥</span>Streak</button>
-<button onclick="go('guess',this)"><span>✓</span>Guess</button>
+ <button class="active" onclick="go('home',this)"><span>🏠</span>Home</button>
+ <button onclick="go('input',this)"><span>🔢</span>Input</button>
+ <button onclick="go('grid',this)"><span>🟩</span>Grid</button>
+ <button onclick="go('analysis',this)"><span>📊</span>Analysis</button>
+ <button onclick="go('streak',this)"><span>🔥</span>Streak</button>
+ <button onclick="go('guess',this)"><span>✓</span>Guess</button>
 </nav>
 
 <script>
 const DRAW_KEY="condition1_number_history";
 const GUESS_KEY="condition1_guess_history";
-let records=[],checks=[],selected=new Set(),guessSet=new Set(),actualSet=new Set();
+
+let records=[];
+let checks=[];
+let selected=new Set();
+let guessSet=new Set();
+let actualSet=new Set();
 
 function load(){
  try{records=JSON.parse(localStorage.getItem(DRAW_KEY)||"[]")}catch(e){records=[]}
@@ -173,27 +213,43 @@ function load(){
  if(!Array.isArray(records))records=[];
  if(!Array.isArray(checks))checks=[];
  records=records.filter(r=>r&&Array.isArray(r.numbers)&&valid(r.numbers));
+ checks=checks.filter(c=>c&&Array.isArray(c.guess)&&Array.isArray(c.actual)&&Number.isFinite(c.matches));
 }
 function saveRecords(){localStorage.setItem(DRAW_KEY,JSON.stringify(records))}
 function saveChecks(){localStorage.setItem(GUESS_KEY,JSON.stringify(checks))}
-function valid(a){return Array.isArray(a)&&a.length===12&&a.every(n=>Number.isInteger(n)&&n>=1&&n<=24)&&new Set(a).size===12}
+function valid(a){
+ return Array.isArray(a)&&a.length===12&&a.every(n=>Number.isInteger(n)&&n>=1&&n<=24)&&new Set(a).size===12;
+}
 function newest(){return [...records].reverse()}
+
 function go(id,btn){
  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
  document.getElementById(id).classList.add("active");
  document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
  if(btn)btn.classList.add("active");
- else document.querySelectorAll(".nav button")[({home:0,input:1,grid:2,analysis:3,streak:4,guess:5})[id]].classList.add("active");
+ else{
+  const index=({home:0,input:1,grid:2,analysis:3,streak:4,guess:5})[id];
+  document.querySelectorAll(".nav button")[index].classList.add("active");
+ }
  window.scrollTo(0,0);
 }
+
 function makeKeypad(id,set,labelId){
- const el=document.getElementById(id);el.innerHTML="";
+ const el=document.getElementById(id);
+ el.innerHTML="";
  for(let n=1;n<=24;n++){
-  const b=document.createElement("button");b.className="num";b.textContent=n;
+  const b=document.createElement("button");
+  b.className="num";
+  b.textContent=n;
+  b.type="button";
   b.onclick=()=>{
    if(set.has(n))set.delete(n);
    else if(set.size<12)set.add(n);
-   else return;
+   else{
+    if(id==="keypad")document.getElementById("inputMsg").textContent="You can select only 12 numbers.";
+    if(id==="guessKeypad")document.getElementById("guessMsg").textContent="You can select only 12 numbers.";
+    return;
+   }
    paintKeypad(id,set,labelId);
   };
   el.appendChild(b);
@@ -206,111 +262,233 @@ function paintKeypad(id,set,labelId){
 }
 function resetSelected(){selected.clear();paintKeypad("keypad",selected,"chosenText")}
 function resetActual(){actualSet.clear();paintKeypad("actualKeypad",actualSet,"actualSelectedText")}
-function addDraw(a){records.push({numbers:[...a].sort((x,y)=>x-y),time:new Date().toISOString()});saveRecords()}
+
+function addDraw(a){
+ records.push({numbers:[...a].sort((x,y)=>x-y),time:new Date().toISOString()});
+ saveRecords();
+}
 function saveSelected(){
- if(!valid([...selected])){document.getElementById("inputMsg").textContent="Select exactly 12 unique numbers.";return}
- addDraw([...selected]);resetSelected();document.getElementById("inputMsg").textContent="Draw saved.";renderAll();
+ if(!valid([...selected])){
+  document.getElementById("inputMsg").textContent="Select exactly 12 unique numbers.";
+  return;
+ }
+ addDraw([...selected]);
+ resetSelected();
+ document.getElementById("inputMsg").textContent="Draw saved.";
+ renderAll();
 }
 function pasteDraws(){
- const text=document.getElementById("paste").value.trim();let added=0,bad=0;
- text.split(/\n/).forEach(line=>{
+ const text=document.getElementById("paste").value.trim();
+ if(!text){
+  document.getElementById("pasteMsg").textContent="Paste at least one draw first.";
+  return;
+ }
+ let added=0,bad=0;
+ text.split(/\r?\n/).forEach(line=>{
   if(!line.trim())return;
   const a=line.trim().split(/[,\s;]+/).map(Number);
-  if(valid(a)){addDraw(a);added++}else bad++;
+  if(valid(a)){addDraw(a);added++}
+  else bad++;
  });
  document.getElementById("pasteMsg").textContent=added+" draw(s) added; "+bad+" invalid line(s).";
+ if(added)document.getElementById("paste").value="";
  renderAll();
 }
 function clearDraws(){
  if(!confirm("Delete all saved draws?"))return;
- records=[];saveRecords();renderAll();
+ records=[];
+ saveRecords();
+ selected.clear();
+ paintKeypad("keypad",selected,"chosenText");
+ renderAll();
 }
-function stamp(t){return new Date(t).toLocaleString()}
+function stamp(t){
+ const d=new Date(t);
+ return Number.isNaN(d.getTime())?"Unknown date":d.toLocaleString();
+}
 function pills(a,other=null){
- return '<div class="pills">'+a.map(n=>'<span class="pill '+(other?(other.has(n)?"hit":"miss"):"")+'">'+n+'</span>').join("")+'</div>';
+ return '<div class="pills">'+a.map(n=>'<span class="pill '+(other?(other.has(n)?"hit":"miss"):"")+'>'+n+'</span>').join("")+'</div>';
 }
+
+/* HOME */
 function renderHome(){
  const n=newest();
  document.getElementById("total").textContent=records.length;
  document.getElementById("guessCount").textContent=checks.length;
  document.getElementById("lastSize").textContent=n.length?n[0].numbers.length:"—";
- document.getElementById("average").textContent=checks.length?(checks.reduce((s,c)=>s+c.matches,0)/checks.length).toFixed(1)+"/12":"—";
- document.getElementById("latest").innerHTML=n.length?'<p>'+stamp(n[0].time)+'</p>'+pills(n[0].numbers):"No draws yet.";
+ document.getElementById("average").textContent=checks.length?
+  (checks.reduce((s,c)=>s+c.matches,0)/checks.length).toFixed(1)+"/12":"—";
+ document.getElementById("latest").innerHTML=n.length?
+  '<p>'+stamp(n[0].time)+'</p>'+pills(n[0].numbers):
+  "No draws yet.";
 }
+
+/* HISTORY */
 function renderHistory(){
  const el=document.getElementById("history"),n=newest();
- el.innerHTML=n.length?n.map((r,i)=>'<div class="draw-card"><b>Draw '+(i+1)+'</b><p>'+stamp(r.time)+'</p>'+pills(r.numbers)+'</div>').join(""):'<div class="empty">No draws saved.</div>';
+ el.innerHTML=n.length?n.map((r,i)=>
+  '<div class="draw-card"><b>Draw '+(i+1)+'</b><p>'+stamp(r.time)+'</p>'+pills(r.numbers)+'</div>'
+ ).join(""):'<div class="empty">No draws saved.</div>';
 }
+
+/* GRID: NUMBERS 1–24 HORIZONTALLY, NEWEST DRAW FIRST */
 function renderGrid(){
  const n=newest(),el=document.getElementById("drawGrid");
- el.innerHTML=n.length?n.map((r,i)=>{
-  let s='<div class="grid-table"><div class="row-label">'+(i+1)+'</div>';
-  for(let x=1;x<=24;x++)s+='<div class="grid-cell '+(r.numbers.includes(x)?"drawn":"")+'">'+(r.numbers.includes(x)?"✓":"")+'</div>';
-  return s+'</div>';
- }).join('<div style="height:8px"></div>'):'<div class="empty">No draws saved.</div>';
+ if(!n.length){
+  el.innerHTML='<div class="empty">No draws saved.</div>';
+  return;
+ }
+
+ let html='<div class="grid-table">';
+ html+='<div class="row-label">Draw</div>';
+ for(let x=1;x<=24;x++){
+  html+='<div class="grid-cell">'+x+'</div>';
+ }
+ html+='</div>';
+
+ n.forEach((r,i)=>{
+  html+='<div class="grid-table"><div class="row-label">'+(i+1)+'</div>';
+  for(let x=1;x<=24;x++){
+   const drawn=r.numbers.includes(x);
+   html+='<div class="grid-cell '+(drawn?'drawn':'')+'">'+(drawn?'✓':'')+'</div>';
+  }
+  html+='</div>';
+ });
+ el.innerHTML=html;
 }
+
+/* FREQUENCY */
 function freq(list){
- const c=Array(25).fill(0);list.forEach(r=>r.numbers.forEach(n=>c[n]++));return c;
+ const c=Array(25).fill(0);
+ list.forEach(r=>r.numbers.forEach(n=>{if(n>=1&&n<=24)c[n]++}));
+ return c;
 }
 function renderFrequency(){
  const c=freq(records),max=Math.max(1,...c.slice(1));
- document.getElementById("frequency").innerHTML=records.length?Array.from({length:24},(_,i)=>{
-  let n=i+1;return '<div style="margin:10px 0"><div class="draw-head"><span>'+n+'</span><span class="muted">'+c[n]+' times</span></div><div class="bar"><div style="width:'+(c[n]/max*100)+'%"></div></div></div>';
- }).join(""):'<div class="empty">Save draws to view frequency.</div>';
+ document.getElementById("frequency").innerHTML=records.length?
+  Array.from({length:24},(_,i)=>{
+   const n=i+1;
+   return '<div style="margin:10px 0"><div class="draw-head"><span>'+n+'</span><span class="muted">'+c[n]+' times</span></div><div class="bar"><div style="width:'+(c[n]/max*100)+'%"></div></div></div>';
+  }).join(""):'<div class="empty">Save draws to view frequency.</div>';
+
  document.getElementById("statsTable").innerHTML=Array.from({length:24},(_,i)=>{
-  const n=i+1;return '<tr><td>'+n+'</td><td>'+c[n]+'</td><td>'+(records.length?(c[n]/records.length*100).toFixed(1):"0.0")+'%</td></tr>';
+  const n=i+1;
+  return '<tr><td>'+n+'</td><td>'+c[n]+'</td><td>'+
+   (records.length?(c[n]/records.length*100).toFixed(1):"0.0")+'%</td></tr>';
  }).join("");
 }
 function renderRecent(){
- const v=document.getElementById("recent").value,n=newest(),list=v==="all"?n:n.slice(0,Number(v)),c=freq(list),max=Math.max(1,...c.slice(1));
- document.getElementById("recentResults").innerHTML=list.length?Array.from({length:24},(_,i)=>{
-  const x=i+1;return '<div style="margin:9px 0"><div class="draw-head"><span>'+x+'</span><span class="muted">'+c[x]+' times</span></div><div class="bar"><div style="width:'+(c[x]/max*100)+'%"></div></div></div>';
- }).join(""):'<div class="empty">No draws available.</div>';
+ const v=document.getElementById("recent").value;
+ const n=newest();
+ const list=v==="all"?n:n.slice(0,Number(v));
+ const c=freq(list),max=Math.max(1,...c.slice(1));
+ document.getElementById("recentResults").innerHTML=list.length?
+  Array.from({length:24},(_,i)=>{
+   const x=i+1;
+   return '<div style="margin:9px 0"><div class="draw-head"><span>'+x+'</span><span class="muted">'+c[x]+' times</span></div><div class="bar"><div style="width:'+(c[x]/max*100)+'%"></div></div></div>';
+  }).join(""):'<div class="empty">No draws available.</div>';
 }
+
+/* CURRENT STREAKS */
 function streak(n){
- let k=0;for(const r of newest()){if(r.numbers.includes(n))k++;else break}return k;
+ let k=0;
+ for(const r of newest()){
+  if(r.numbers.includes(n))k++;
+  else break;
+ }
+ return k;
 }
 function renderStreaks(){
- const a=[];for(let n=1;n<=24;n++){const k=streak(n);if(k>=2)a.push({n,k})}
+ const a=[];
+ for(let n=1;n<=24;n++){
+  const k=streak(n);
+  if(k>=2)a.push({n,k});
+ }
  a.sort((x,y)=>y.k-x.k||x.n-y.n);
- document.getElementById("streaks").innerHTML=a.length?a.map(x=>'<div class="draw-card"><span class="good">🔥 ×'+x.k+'</span> &nbsp; Number '+x.n+'</div>').join(""):'<div class="empty">No streak of 2 or more draws.</div>';
+ document.getElementById("streaks").innerHTML=a.length?
+  a.map(x=>'<div class="draw-card"><span class="good">🔥 ×'+x.k+'</span> &nbsp; Number '+x.n+'</div>').join(""):
+  '<div class="empty">No streak of 2 or more draws.</div>';
 }
+
+/* GUESS CHECKER */
 function saveGuess(){
- if(!valid([...guessSet])){document.getElementById("guessMsg").textContent="Select exactly 12 unique numbers.";return}
- document.getElementById("guessMsg").textContent="Guess saved: "+[...guessSet].sort((a,b)=>a-b).join(", ");
+ if(!valid([...guessSet])){
+  document.getElementById("guessMsg").textContent="Select exactly 12 unique numbers.";
+  return;
+ }
+ document.getElementById("guessMsg").textContent=
+  "Guess selected: "+[...guessSet].sort((a,b)=>a-b).join(", ")+". Enter the actual result when available.";
 }
 function checkGuess(){
- if(!valid([...guessSet])){document.getElementById("guessResult").innerHTML='<p class="bad">Save a guess by selecting 12 numbers above.</p>';return}
- if(!valid([...actualSet])){document.getElementById("guessResult").innerHTML='<p class="bad">Select exactly 12 actual-result numbers.</p>';return}
- const guess=[...guessSet].sort((a,b)=>a-b),actual=[...actualSet].sort((a,b)=>a-b);
- const hit=guess.filter(n=>actual.includes(n)),miss=guess.filter(n=>!actual.includes(n)),extra=actual.filter(n=>!guess.includes(n));
- const c={time:new Date().toISOString(),guess,actual,matches:hit.length,misses:miss.length,notGuessed:extra};
- checks.unshift(c);saveChecks();
+ if(!valid([...guessSet])){
+  document.getElementById("guessResult").innerHTML='<p class="bad">Select exactly 12 guess numbers first.</p>';
+  return;
+ }
+ if(!valid([...actualSet])){
+  document.getElementById("guessResult").innerHTML='<p class="bad">Select exactly 12 actual-result numbers.</p>';
+  return;
+ }
+
+ const guess=[...guessSet].sort((a,b)=>a-b);
+ const actual=[...actualSet].sort((a,b)=>a-b);
+ const hit=guess.filter(n=>actual.includes(n));
+ const miss=guess.filter(n=>!actual.includes(n));
+ const extra=actual.filter(n=>!guess.includes(n));
+
+ const c={
+  time:new Date().toISOString(),
+  guess,actual,
+  matches:hit.length,
+  misses:miss.length,
+  notGuessed:extra
+ };
+ checks.unshift(c);
+ saveChecks();
+
  document.getElementById("guessResult").innerHTML=
- '<div class="draw-card"><h3>Comparison result</h3><div class="stats">'+
- '<div class="stat">Correct matches<strong class="good">'+hit.length+'</strong></div>'+
- '<div class="stat">Guessed but absent<strong class="bad">'+miss.length+'</strong></div>'+
- '<div class="stat">Actual numbers missed<strong>'+extra.length+'</strong></div>'+
- '<div class="stat">Match rate<strong>'+(hit.length/12*100).toFixed(1)+'%</strong></div>'+
- '</div><p>Correctly matched numbers:</p>'+pills(hit)+
- '<p>Your guessed numbers not in the result:</p>'+pills(miss)+
- '<p>Actual numbers not in your guess:</p>'+pills(extra)+
- '<p class="muted">Historical comparison only; not a prediction.</p></div>';
- renderGuessHistory();renderHome();
+  '<div class="draw-card"><h3>Comparison result</h3><div class="stats">'+
+  '<div class="stat">Correct matches<strong class="good">'+hit.length+'/12</strong></div>'+
+  '<div class="stat">Wrong guesses<strong class="bad">'+miss.length+'/12</strong></div>'+
+  '<div class="stat">Actual numbers missed<strong>'+extra.length+'</strong></div>'+
+  '<div class="stat">Match rate<strong>'+(hit.length/12*100).toFixed(1)+'%</strong></div>'+
+  '</div><p>Correctly matched numbers:</p>'+pills(hit)+
+  '<p>Your guessed numbers not in the result:</p>'+pills(miss)+
+  '<p>Actual numbers not in your guess:</p>'+pills(extra)+
+  '<p class="muted">Historical comparison only; not a prediction.</p></div>';
+
+ renderGuessHistory();
+ renderHome();
 }
 function renderGuessHistory(){
  const el=document.getElementById("guessHistory");
  el.innerHTML=checks.length?checks.map((c,i)=>
- '<div class="draw-card"><div class="draw-head"><b>Check '+(i+1)+'</b><span class="good">'+c.matches+'/12 matches</span></div><p>'+stamp(c.time)+'</p><p>Your guess</p>'+pills(c.guess,new Set(c.actual))+'<p>Actual result</p>'+pills(c.actual,new Set(c.guess))+'<p class="muted">Match rate: '+(c.matches/12*100).toFixed(1)+'%</p></div>'
+  '<div class="draw-card"><div class="draw-head"><b>Check '+(i+1)+'</b><span class="good">'+c.matches+'/12 matches</span></div>'+
+  '<p>'+stamp(c.time)+'</p><p>Your guess</p>'+pills(c.guess,new Set(c.actual))+
+  '<p>Actual result</p>'+pills(c.actual,new Set(c.guess))+
+  '<p class="muted">Match rate: '+(c.matches/12*100).toFixed(1)+'%</p></div>'
  ).join(""):'<div class="empty">No checks saved yet.</div>';
 }
 function clearGuessHistory(){
  if(!confirm("Clear saved guess-check history?"))return;
- checks=[];saveChecks();renderGuessHistory();renderHome();
+ checks=[];
+ saveChecks();
+ renderGuessHistory();
+ renderHome();
+ document.getElementById("guessResult").innerHTML="";
 }
+
+/* RENDER EVERYTHING */
 function renderAll(){
- renderHome();renderHistory();renderGrid();renderFrequency();renderRecent();renderStreaks();renderGuessHistory();
+ renderHome();
+ renderHistory();
+ renderGrid();
+ renderFrequency();
+ renderRecent();
+ renderStreaks();
+ renderGuessHistory();
 }
+
+/* START */
 load();
 makeKeypad("keypad",selected,"chosenText");
 makeKeypad("guessKeypad",guessSet,"guessSelectedText");
